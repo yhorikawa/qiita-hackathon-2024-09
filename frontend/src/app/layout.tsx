@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { PrelineScript } from "./_dependencies/PrelineScript";
 import "./globals.css";
 import "@mdxeditor/editor/style.css";
+import { FooterLayout } from "#/components/FooterLayout";
 import { HeaderLayout } from "#/components/HeaderLayout";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -10,8 +11,8 @@ const inter = Inter({ subsets: ["latin"] });
 export const runtime = "edge";
 
 export const metadata: Metadata = {
-  title: "DocBuddy",
-  description: "DocBuddy ~ 相棒のAIと壁打ちしながらドキュメント作成！ ~",
+  title: "マンホールは大体円形",
+  description: "マンホールは大体円形",
 };
 
 export default function RootLayout({
@@ -28,6 +29,7 @@ export default function RootLayout({
             {children}
           </div>
         </main>
+        <FooterLayout />
         <PrelineScript />
       </body>
     </html>
