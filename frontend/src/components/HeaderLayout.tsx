@@ -19,7 +19,7 @@ export const HeaderLayout = () => {
     <header className="bg-white py-2 px-20 flex justify-between items-center sticky top-0 z-10">
       <p className="py-2">
         <Link href="/">
-          <Image src={Logo} alt="DocBuddyのロゴ" width={171} height={30} />
+          マンホールは大体円形
         </Link>
       </p>
       {path === "/" && (
@@ -30,13 +30,13 @@ export const HeaderLayout = () => {
           <DropdownMenuContent>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="flex gap-2 focus:bg-violet-50 fover:bg-violet-50">
-              <Link href="/new" className="text-base leading-relaxed">
+              <Link href="/" className="text-base leading-relaxed">
                 新規作成
               </Link>
               <ChevronRight className="ml-auto h-6 w-6 opacity-60" />
             </DropdownMenuItem>
             <DropdownMenuItem className="flex gap-2 focus:bg-violet-50 fover:bg-violet-50">
-              <Link href="/chat" className="text-base leading-relaxed">
+              <Link href="/" className="text-base leading-relaxed">
                 AIと壁打ち作成
               </Link>
               <ChevronRight className="ml-auto h-6 w-6 opacity-60" />
