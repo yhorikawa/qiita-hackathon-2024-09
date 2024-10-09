@@ -18,9 +18,7 @@ export const HeaderLayout = () => {
   return (
     <header className="bg-white py-2 px-20 flex justify-between items-center sticky top-0 z-10">
       <p className="py-2">
-        <Link href="/">
-          マンホールは大体円形
-        </Link>
+        <Link href="/">マンホールは大体円形</Link>
       </p>
       {path === "/" && (
         <DropdownMenu>
