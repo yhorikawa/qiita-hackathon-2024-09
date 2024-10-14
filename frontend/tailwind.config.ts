@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 const { fontFamily } = require("tailwindcss/defaultTheme");
+const flowbite = require("flowbite-react/tailwind");
 
 const config: Config = {
   darkMode: ["class"],
@@ -8,6 +9,7 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "node_modules/preline/dist/*.js",
+    flowbite.content(),
   ],
   theme: {
     extend: {
@@ -93,6 +95,10 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("preline/plugin"), require("tailwindcss-animate")],
+  plugins: [
+    require("preline/plugin"),
+    require("tailwindcss-animate"),
+    flowbite.plugin(),
+  ],
 };
 export default config;
