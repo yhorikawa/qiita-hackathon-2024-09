@@ -4,11 +4,14 @@
   "description": "",
   "scripts": {
     "dev": "turbo dev",
-    "format": "biome check . --write --unsafe"
+    "format": "biome check . --write --unsafe",
+    "prepare": "husky install"
   },
   "license": "Unlicense",
   "devDependencies": {
     "@biomejs/biome": "^1.9.3",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.2.10",
     "turbo": "^1.13.4"
   },
   "packageManager": "pnpm@9.11.0"
