@@ -11,7 +11,7 @@ preview_database_id = "local-test-db"
 [[env.production.d1_databases]]
 binding = "DB"
 database_name = "qiita-hackathon-2024-09"
-database_id = "c795f4ca-2eda-41da-9e8c-5c9241f088fe"
+database_id = "3e26f83d-e59f-419b-92cd-03250ec8a99b"
 
 [env.dev.vars]
 ENVIROMENT = "dev"
