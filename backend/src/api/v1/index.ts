@@ -6,9 +6,8 @@ export type Bindings = {
   OPENAI_API_KEY: string;
 };
 
-const api = new Hono<{ Bindings: Bindings }>()
-  .get("/", (c) => {
-    return c.text("Hello Hono!");
-  })
+const api = new Hono<{ Bindings: Bindings }>().get("/", (c) => {
+  return c.text("Hello Hono!");
+});
 
 export default api;
