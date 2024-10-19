@@ -55,7 +55,7 @@ export const useSignIn = () => {
       if (error instanceof AlreadySignInError) {
         const result = await trigger({ name });
         if (!result) return;
-        window.location.href = "/questions/completed";
+        window.location.href = "/questions";
       }
     }
   }, [name, trigger, signInTrigger]);
