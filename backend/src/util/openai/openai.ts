@@ -17,11 +17,14 @@ type ChatGPTResponse = {
 export const fetchChatGPTResponse = (
   apiKey: string,
   messages: Message[],
+  // biome-ignore lint/suspicious/noExplicitAny: any is required for the options parameter
+  options: Record<string, any> = {},
 ): Promise<ChatGPTResponse> => {
   const body = {
     model: "gpt-4o",
     messages: messages,
     max_completion_tokens: 300,
+    ...options,
   };
 
   return fetch(URL, {

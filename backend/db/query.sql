@@ -21,3 +21,6 @@ SELECT * FROM Messages WHERE room_id = @room_id order by created_at asc;
 
 -- name: createMessage :exec
 INSERT INTO Messages (id, room_id, user_id, message, message_type) VALUES (@id, @room_id, @user_id, @message, @message_type);
+
+-- name: createAnswer :exec
+INSERT INTO Answers (id, user_id, question_id, answer) VALUES (@id, @user_id, @question_id, @answer);
