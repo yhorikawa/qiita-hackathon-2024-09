@@ -410,25 +410,12 @@ export function createAnswer(
 }
 
 const getUsersQuery = `-- name: getUsers :many
-SELECT id, name, image_url, created_at, updated_at FROM Users`;
+SELECT id, name, image_url, created_at, updated_at FROM Users order by created_at asc`;
 
 export type getUsersRow = {
   id: string;
   name: string;
   imageUrl: string | null;
-
-const getAnswersByUserIdQuery = `-- name: getAnswersByUserId :many
-SELECT id, user_id, question_id, answer, created_at, updated_at FROM Answers WHERE user_id = ?1`;
-
-export type getAnswersByUserIdParams = {
-  userId: string;
-};
-
-export type getAnswersByUserIdRow = {
-  id: string;
-  userId: string;
-  questionId: string;
-  answer: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -437,12 +424,6 @@ type RawgetUsersRow = {
   id: string;
   name: string;
   image_url: string | null;
-
-type RawgetAnswersByUserIdRow = {
-  id: string;
-  user_id: string;
-  question_id: string;
-  answer: string;
   created_at: string;
   updated_at: string;
 };
@@ -461,6 +442,40 @@ export function getUsers(
             id: raw.id,
             name: raw.name,
             imageUrl: raw.image_url,
+            createdAt: raw.created_at,
+            updatedAt: raw.updated_at,
+          }}),
+        }})
+        .then(onFulfilled).catch(onRejected);
+    },
+    batch() { return ps; },
+  }
+}
+
+const getAnswersByUserIdQuery = `-- name: getAnswersByUserId :many
+SELECT id, user_id, question_id, answer, created_at, updated_at FROM Answers WHERE user_id = ?1`;
+
+export type getAnswersByUserIdParams = {
+  userId: string;
+};
+
+export type getAnswersByUserIdRow = {
+  id: string;
+  userId: string;
+  questionId: string;
+  answer: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type RawgetAnswersByUserIdRow = {
+  id: string;
+  user_id: string;
+  question_id: string;
+  answer: string;
+  created_at: string;
+  updated_at: string;
+};
 
 export function getAnswersByUserId(
   d1: D1Database,
@@ -519,3 +534,4 @@ export function createPersonality(
     batch() { return ps; },
   }
 }
+

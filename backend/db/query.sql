@@ -29,7 +29,7 @@ INSERT INTO Messages (id, room_id, user_id, message, message_type) VALUES (@id, 
 INSERT INTO Answers (id, user_id, question_id, answer) VALUES (@id, @user_id, @question_id, @answer);
 
 -- name: getUsers :many
-SELECT * FROM Users;
+SELECT * FROM Users order by created_at asc;
 
 -- name: getAnswersByUserId :many
 SELECT * FROM Answers WHERE user_id = @user_id;
