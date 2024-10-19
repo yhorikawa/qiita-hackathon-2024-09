@@ -27,11 +27,15 @@ app.use("*", async (c, next) => {
 
 const routes = app
   .get("/", async (c) => {
+    const payload = c.get("jwtPayload");
+    const id = payload.id;
+
     const users = await db.getUsers(c.env.DB);
+    const filteredUsers = users.results.filter((user) => user.id !== id);
 
     const response: UsersResponse = {
       success: true,
-      data: { users: users.results },
+      data: { users: filteredUsers },
       error: [],
     };
     c.status(200);

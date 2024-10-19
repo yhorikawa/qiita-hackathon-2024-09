@@ -65,6 +65,10 @@ Content-Type: application/json
 ]
 
 ###
+GET {{host}}/api/v1/users
+Content-Type: application/json
+
+###
 GET {{host}}/api/v1/users/me
 Content-Type: application/json
 
