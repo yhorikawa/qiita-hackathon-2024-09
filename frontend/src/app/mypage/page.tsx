@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Link from "next/link";
 import { Menu, Profile } from "#/components/ui";
 
 const profile = {
@@ -43,7 +44,8 @@ const profile = {
 const Page: NextPage = async () => {
   return (
     <section>
-      <div className="py-6 px-4 bg-gray-200">
+      <div className="py-6 px-4 bg-gray-50">
+        <Link href="/users">交流を見る</Link>
         <Profile
           name={profile.name}
           imageUrl={profile.imageUrl}

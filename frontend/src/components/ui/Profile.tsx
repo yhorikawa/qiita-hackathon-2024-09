@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { twMerge } from "tailwind-merge";
 
 type MeterProps = {
@@ -18,6 +19,7 @@ type ProfileProps = {
     color: string;
     merterColor: string;
   }[];
+  id?: string;
 };
 
 const Meter = ({ label, color, value, merterColor }: MeterProps) => {
@@ -53,6 +55,7 @@ export const Profile = ({
   imageUrl,
   description,
   meters,
+  id,
 }: ProfileProps) => {
   return (
     <div className="py-6 px-4 rounded-lg shadow-sm flex flex-col gap-6 items-center bg-white">
@@ -66,6 +69,9 @@ export const Profile = ({
         height={214}
         className="rounded-full object-cover"
       />
+      <Link href={`/rooms/${id}`} className="text-white bg-blue-500 rounded-lg">
+        この守護霊にメッセージを送る
+      </Link>
       <p className="text-sm font-normal leading-relaxed">{description}</p>
       <div className="flex flex-col gap-4 w-full px-4">
         {meters.map((meter) => (
