@@ -19,3 +19,11 @@ Content-Type: application/json
 {
   "name": "test1111"
 }
+
+###
+GET {{host}}/api/v1/questions
+Content-Type: application/json
+
+###
+GET {{host}}/api/v1/questions/getOrderNum/1
+Content-Type: application/json

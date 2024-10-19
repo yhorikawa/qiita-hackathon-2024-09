@@ -43,7 +43,8 @@ export type Personalities = {
 
 export type Questions = {
   id: string;
-  orderNumber: number;
+  type: string;
+  orderNum: number;
   question: string;
   createdAt: string;
   updatedAt: string;
