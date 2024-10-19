@@ -250,7 +250,7 @@ export function createRoom(
 }
 
 const getMessagesByRoomIdQuery = `-- name: getMessagesByRoomId :many
-SELECT id, room_id, message, message_type, created_at, updated_at FROM Messages WHERE room_id = ?1 order by created_at asc`;
+SELECT id, room_id, user_id, message, message_type, created_at, updated_at FROM Messages WHERE room_id = ?1 order by created_at asc`;
 
 export type getMessagesByRoomIdParams = {
   roomId: string;
@@ -259,6 +259,7 @@ export type getMessagesByRoomIdParams = {
 export type getMessagesByRoomIdRow = {
   id: string;
   roomId: string;
+  userId: string;
   message: string;
   messageType: string;
   createdAt: string;
@@ -268,6 +269,7 @@ export type getMessagesByRoomIdRow = {
 type RawgetMessagesByRoomIdRow = {
   id: string;
   room_id: string;
+  user_id: string;
   message: string;
   message_type: string;
   created_at: string;
@@ -289,12 +291,40 @@ export function getMessagesByRoomId(
           results: r.results.map((raw: RawgetMessagesByRoomIdRow) => { return {
             id: raw.id,
             roomId: raw.room_id,
+            userId: raw.user_id,
             message: raw.message,
             messageType: raw.message_type,
             createdAt: raw.created_at,
             updatedAt: raw.updated_at,
           }}),
         }})
+        .then(onFulfilled).catch(onRejected);
+    },
+    batch() { return ps; },
+  }
+}
+
+const createMessageQuery = `-- name: createMessage :exec
+INSERT INTO Messages (id, room_id, user_id, message, message_type) VALUES (?1, ?2, ?3, ?4, ?5)`;
+
+export type createMessageParams = {
+  id: string;
+  roomId: string;
+  userId: string;
+  message: string;
+  messageType: string;
+};
+
+export function createMessage(
+  d1: D1Database,
+  args: createMessageParams
+): Query<D1Result> {
+  const ps = d1
+    .prepare(createMessageQuery)
+    .bind(args.id, args.roomId, args.userId, args.message, args.messageType);
+  return {
+    then(onFulfilled?: (value: D1Result) => void, onRejected?: (reason?: any) => void) {
+      ps.run()
         .then(onFulfilled).catch(onRejected);
     },
     batch() { return ps; },

@@ -20,11 +20,13 @@ CREATE TABLE IF NOT EXISTS Rooms (
 CREATE TABLE IF NOT EXISTS Messages (
   id TEXT PRIMARY KEY,
   room_id TEXT NOT NULL,
+  user_id TEXT NOT NULL,
   message TEXT NOT NULL,
   message_type TEXT NOT NULL,
   created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
   updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
-  FOREIGN KEY (room_id) REFERENCES Rooms(id)
+  FOREIGN KEY (room_id) REFERENCES Rooms(id),
+  FOREIGN KEY (user_id) REFERENCES Users(id)
 );
 
 CREATE TABLE IF NOT EXISTS Personalities (

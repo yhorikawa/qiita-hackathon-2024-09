@@ -37,7 +37,7 @@ INSERT INTO Rooms (id, name, owner_id, member_id)
 VALUES
   ('95144a33-d37d-0941-2099-882192201c8c', 'test room', 'ba6d5b49-f786-478f-aaf9-b7948b83a05e', 'ba6d5b49-f786-478f-aaf9-b7948b8eerfd');
 
-INSERT INTO Messages (id, room_id, message, message_type, "created_at", "updated_at")
+INSERT INTO Messages (id, room_id, user_id, message, message_type, "created_at", "updated_at")
 VALUES
-  ('c3d9ca3f-e22c-a9f3-b28a-b03010dee145', '95144a33-d37d-0941-2099-882192201c8c', 'Hello, Bob!', 'text', '2024-10-19 15:34:32', '2024-10-19 15:34:32'),
-  ('529453f4-0e12-c8a4-c881-60a33d65a21e', '95144a33-d37d-0941-2099-882192201c8c', 'Hi, Alice!', 'text', '2024-10-19 16:34:32', '2024-10-19 16:34:32');
+  ('c3d9ca3f-e22c-a9f3-b28a-b03010dee145', '95144a33-d37d-0941-2099-882192201c8c', 'ba6d5b49-f786-478f-aaf9-b7948b83a05e', 'Hello, Bob!', 'text', '2024-10-19 15:34:32', '2024-10-19 15:34:32'),
+  ('529453f4-0e12-c8a4-c881-60a33d65a21e', '95144a33-d37d-0941-2099-882192201c8c', 'ba6d5b49-f786-478f-aaf9-b7948b8eerfd', 'Hi, Alice!', 'text', '2024-10-19 16:34:32', '2024-10-19 16:34:32');
