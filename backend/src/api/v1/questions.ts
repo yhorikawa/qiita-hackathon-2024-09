@@ -1,5 +1,6 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
+import { jwt } from "hono/jwt";
 import { z } from "zod";
 import type * as model from "../../gen/sqlc/models";
 import * as db from "../../gen/sqlc/querier";
@@ -18,6 +19,11 @@ interface QuestionsResponse {
 }
 
 const app = new Hono<{ Bindings: Bindings }>();
+
+app.use("*", async (c, next) => {
+  const setJwt = await jwt({ secret: c.env.JWT_SECRET, cookie: "accessToken" });
+  return setJwt(c, next);
+});
 
 const routes = app
   .get("/", async (c) => {

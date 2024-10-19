@@ -68,6 +68,15 @@ const routes = app
       });
       return c.json({ success: true, id: results.id });
     },
-  );
+  )
+  .post("/signout", async (c) => {
+    setCookie(c, "accessToken", "", {
+      expires: new Date(0),
+      httpOnly: true,
+      sameSite: "Lax",
+      secure: !(c.env.ENVIROMENT === "dev"),
+    });
+    return c.json({ success: true });
+  });
 
 export default routes;
