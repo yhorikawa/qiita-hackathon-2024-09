@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Image from "next/image";
 import { PrelineScript } from "./_dependencies/PrelineScript";
 import "./globals.css";
 import "@mdxeditor/editor/style.css";
@@ -26,13 +25,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="w-[390px] m-auto">
           <main className="bg-violet-50">
-            <Image
-              src="/main-visual.png"
-              width={390}
-              height={434}
-              alt="いい感じの画像"
-            />
-            <div className="mx-auto max-w-5xl min-h-svh relative p-12">
+            <div className="mx-auto max-w-5xl min-h-svh relative">
               {children}
             </div>
             <Menu />
