@@ -2,38 +2,21 @@
 import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { notFound } from "next/navigation";
+import { useState } from "react";
 import Lottie from "react-lottie";
 import { twMerge } from "tailwind-merge";
 import { Button } from "#/components/ui";
+import { useGetMe } from "../../_dependencies/use-get-me";
 import AnianimationData from "./completed-animaton.json";
 
 const Page: NextPage = () => {
-  //memo: 必要かと思ってからの関数を用意しましたが不要なら置き換えるか削除してください
-  const handleClick = () => {
-    setIsShowImage(true);
-  };
-
-  const [isCompleted, setIsCompleted] = useState(false);
+  const { data, isLoading, error } = useGetMe();
   const [isShowImage, setIsShowImage] = useState(false);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setIsCompleted(true);
-    }, 1000);
-  }, []);
-  const defaultOptions = {
-    autoplay: true,
-    animationData: AnianimationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
-  return (
-    <>
-      <div
-        className={twMerge("h-dvh flex items-center", isCompleted && "hidden")}
-      >
+  if (isLoading)
+    return (
+      <div className="h-dvh flex items-center">
         <div className="py-6 px-4 flex-grow">
           <p className="text-lg leading-normal font-black text-center">
             診断内容から
@@ -60,9 +43,24 @@ const Page: NextPage = () => {
           </div>
         </div>
       </div>
-      <div
-        className={twMerge("h-dvh flex items-center", !isCompleted && "hidden")}
-      >
+    );
+
+  if (!data?.success || error) return notFound();
+
+  const handleClick = () => {
+    setIsShowImage(true);
+  };
+
+  const defaultOptions = {
+    autoplay: true,
+    animationData: AnianimationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+  return (
+    <>
+      <div className="h-dvh flex items-center">
         <div className="flex flex-col items-center flex-grow">
           <p className="text-lg leading-normal font-black text-center">
             あなたの守護霊が作成されました！
@@ -70,7 +68,7 @@ const Page: NextPage = () => {
           <div className="mt-6">
             {isShowImage ? (
               <Image
-                src="/214x214.png"
+                src={data.data.user.imageUrl || "/214x214.png"}
                 alt="守護霊"
                 width={214}
                 height={214}
