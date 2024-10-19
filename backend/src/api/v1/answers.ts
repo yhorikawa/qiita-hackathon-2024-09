@@ -98,7 +98,7 @@ const routes = app.post(
 
     if (c.env.ENVIROMENT === "dev") {
       const imageUrl = "https://hackathon-image.horikawa.dev/image.png";
-      db.updateUserImageUrl(c.env.DB, { id: userId, imageUrl });
+      await db.updateUserImageUrl(c.env.DB, { id: userId, imageUrl });
       c.status(201);
       return c.json({ success: true, error: [] });
     }
@@ -112,7 +112,7 @@ const routes = app.post(
       httpMetadata: { contentType: "image/png" },
     });
     const imageUrl = `https://hackathon-image.horikawa.dev/${fileName}`;
-    db.updateUserImageUrl(c.env.DB, { id: userId, imageUrl });
+    await db.updateUserImageUrl(c.env.DB, { id: userId, imageUrl });
 
     c.status(201);
     return c.json({ success: true, error: [] });
