@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { NextPage } from "next";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Button } from "#/components/ui";
 
 const schema = z.object({
   answer1: z.string(),
@@ -51,7 +52,9 @@ const Page: NextPage = () => {
       <input type="textarea" {...register("answer3")} />
       <input type="textarea" {...register("answer4")} />
       <input type="textarea" {...register("answer5")} />
-      <button type="submit">Submit</button>
+      <Button type="submit" icon={true}>
+        この回答で守護霊を作成する
+      </Button>
     </form>
   );
 };

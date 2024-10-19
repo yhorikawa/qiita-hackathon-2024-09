@@ -3,6 +3,9 @@ import Image from "next/image";
 import { Button } from "#/components/ui";
 
 const Page: NextPage = async () => {
+  const handleAction = () => {
+    console.log("handleAction");
+  };
   return (
     <div className="flex flex-col min-h-screen items-center">
       <div className="py-6 px-4 flex flex-col items-center flex-grow">
@@ -43,8 +46,12 @@ const Page: NextPage = async () => {
             className="rounded-full object-cover"
           />
         </div>
-        <Button buttonText="守護霊を見る" />
-        <Button buttonText="マイページで診断結果を見る" />
+        <Button type="button" onClick={handleAction}>
+          守護霊を見る
+        </Button>
+        <Button type="button" icon={true} onClick={handleAction}>
+          マイページで診断結果を見る
+        </Button>
       </div>
     </div>
   );
