@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    domains: ["hackathon-image.horikawa.dev"],
+  },
   async rewrites() {
     return [
       {

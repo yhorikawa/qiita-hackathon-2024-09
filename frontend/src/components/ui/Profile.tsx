@@ -69,9 +69,14 @@ export const Profile = ({
         height={214}
         className="rounded-full object-cover"
       />
-      <Link href={`/rooms/${id}`} className="text-white bg-blue-500 rounded-lg">
-        この守護霊にメッセージを送る
-      </Link>
+      {id ? (
+        <Link
+          href={`/rooms/${id}`}
+          className="text-white bg-blue-500 rounded-lg"
+        >
+          この守護霊にメッセージを送る
+        </Link>
+      ) : null}
       <p className="text-sm font-normal leading-relaxed">{description}</p>
       <div className="flex flex-col gap-4 w-full px-4">
         {meters.map((meter) => (

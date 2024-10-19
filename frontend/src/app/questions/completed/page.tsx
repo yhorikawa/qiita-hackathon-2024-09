@@ -1,15 +1,20 @@
 "use client";
 import type { NextPage } from "next";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Button } from "#/components/ui";
+import { useGetMe } from "../../_dependencies/use-get-me";
 
-const Page: NextPage = async () => {
-  //memo: 必要かと思ってからの関数を用意しましたが不要なら置き換えるか削除してください
-  const handleAction = () => {
-    console.log("handleAction");
-  };
-  return (
-    <div className="flex flex-col min-h-screen items-center">
+const Page: NextPage = () => {
+  const { data, isLoading, error } = useGetMe();
+  const [open, setOpen] = useState<boolean>(false);
+  const router = useRouter();
+
+  console.log(data);
+
+  if (isLoading)
+    return (
       <div className="py-6 px-4 flex flex-col items-center flex-grow">
         <p className="text-lg leading-normal font-black text-center">
           診断内容から
@@ -35,26 +40,39 @@ const Page: NextPage = async () => {
           </svg>
         </div>
       </div>
-      <div className="flex flex-col items-center">
-        <p className="text-lg leading-normal font-black text-center">
-          あなたの守護霊が作成されました！
-        </p>
-        <div className="mt-6">
-          <Image
-            src="/214x214.png"
-            alt="守護霊"
-            width={214}
-            height={214}
-            className="rounded-full object-cover"
-          />
-        </div>
-        <Button type="button" onClick={handleAction}>
+    );
+
+  if (!data?.success || error) return <div>エラーが発生しました</div>;
+
+  //memo: 必要かと思ってからの関数を用意しましたが不要なら置き換えるか削除してください
+  const handleAction = () => {
+    router.push("/mypage");
+  };
+  return (
+    <div className="flex flex-col min-h-screen items-center">
+      {!open ? (
+        <Button type="button" onClick={() => setOpen(true)}>
           守護霊を見る
         </Button>
-        <Button type="button" icon={true} onClick={handleAction}>
-          マイページで診断結果を見る
-        </Button>
-      </div>
+      ) : (
+        <div className="flex flex-col items-center">
+          <p className="text-lg leading-normal font-black text-center">
+            あなたの守護霊が作成されました！
+          </p>
+          <div className="mt-6">
+            <Image
+              src={data.data.user.imageUrl || "/214x214.png"}
+              alt="守護霊"
+              width={214}
+              height={214}
+              className="rounded-full object-cover"
+            />
+          </div>
+          <Button type="button" icon={true} onClick={handleAction}>
+            マイページで診断結果を見る
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

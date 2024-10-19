@@ -1,6 +1,8 @@
+"use client";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { Menu, Profile } from "#/components/ui";
+import { useGetMe } from "../_dependencies/use-get-me";
 
 const profile = {
   name: "万歩留 燕京",
@@ -41,7 +43,8 @@ const profile = {
   ],
 };
 
-const Page: NextPage = async () => {
+const Page: NextPage = () => {
+  const { data, isLoading, error } = useGetMe();
   return (
     <section>
       <div className="py-6 px-4 bg-gray-50">
