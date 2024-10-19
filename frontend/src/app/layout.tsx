@@ -5,6 +5,7 @@ import "./globals.css";
 import "@mdxeditor/editor/style.css";
 import { FooterLayout } from "#/components/FooterLayout";
 import { HeaderLayout } from "#/components/HeaderLayout";
+import { Menu } from "#/components/ui/menu";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,6 +30,7 @@ export default function RootLayout({
             <div className="mx-auto max-w-5xl min-h-svh relative p-12">
               {children}
             </div>
+            <Menu />
           </main>
           <FooterLayout />
           <PrelineScript />
