@@ -18,7 +18,18 @@ interface UserResponse {
   error: string[];
 }
 
+interface UserMeResponse {
+  success: boolean;
+  data: { user: model.Users };
+  error: string[];
+}
+
 const app = new Hono<{ Bindings: Bindings }>();
+
+app.use("*", async (c, next) => {
+  const setJwt = await jwt({ secret: c.env.JWT_SECRET, cookie: "accessToken" });
+  return setJwt(c, next);
+});
 
 const routes = app
   .get("/", async (c) => {
@@ -30,6 +41,31 @@ const routes = app
       data: { users: users.results },
       error: [],
     };
+    c.status(200);
+    return c.json(response);
+  })
+
+  .get("/me", async (c) => {
+    const payload = c.get("jwtPayload");
+    const id = payload.id;
+
+    const response: UserMeResponse = {
+      success: false,
+      data: {
+        user: {} as model.Users,
+      },
+      error: [],
+    };
+
+    const user = await db.getUserById(c.env.DB, { id });
+    if (!user) {
+      c.status(404);
+      response.error.push(id);
+      return c.json(response);
+    }
+
+    response.success = true;
+    response.data.user = user;
     c.status(200);
     return c.json(response);
   })
