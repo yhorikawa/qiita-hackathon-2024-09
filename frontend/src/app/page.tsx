@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
-import { ChatBallon } from "#/components/ui/ChatBalloon";
-import { Card } from "#/components/ui/card";
+import { Card, ChatBallon } from "#/components/ui";
 import { client } from "#/lib/client";
 
 const Page: NextPage = async () => {

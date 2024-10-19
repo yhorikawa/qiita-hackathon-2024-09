@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Image from "next/image";
 import { PrelineScript } from "./_dependencies/PrelineScript";
 import "./globals.css";
 import "@mdxeditor/editor/style.css";
 import { FooterLayout } from "#/components/FooterLayout";
-import { HeaderLayout } from "#/components/HeaderLayout";
-import { Menu } from "#/components/ui/menu";
+import { Menu } from "#/components/ui";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,9 +24,14 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={inter.className}>
-        <div className="w-[360px] m-auto">
-          <HeaderLayout />
+        <div className="w-[390px] m-auto">
           <main className="bg-violet-50">
+            <Image
+              src="/main-visual.png"
+              width={390}
+              height={434}
+              alt="いい感じの画像"
+            />
             <div className="mx-auto max-w-5xl min-h-svh relative p-12">
               {children}
             </div>
