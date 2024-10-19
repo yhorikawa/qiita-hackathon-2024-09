@@ -25,6 +25,7 @@
     "preline": "^2.4.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.1",
     "react-textarea-autosize": "^8.5.3",
     "react-use": "^17.5.1",
     "swr": "^2.2.5",

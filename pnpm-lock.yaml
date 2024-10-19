@@ -81,6 +81,9 @@ importers:
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
+      react-hook-form:
+        specifier: ^7.53.1
+        version: 7.53.1(react@18.3.1)
       react-textarea-autosize:
         specifier: ^8.5.3
         version: 8.5.3(@types/react@18.3.8)(react@18.3.1)
@@ -3247,8 +3250,8 @@ packages:
     peerDependencies:
       react: '>=16.13.1'
 
-  react-hook-form@7.53.0:
-    resolution: {integrity: sha512-M1n3HhqCww6S2hxLxciEXy2oISPnAzxY7gvwVPrtlczTM/1dDadXgUxDpHMrMTblDOcm/AXtXxHwZ3jpg1mqKQ==}
+  react-hook-form@7.53.1:
+    resolution: {integrity: sha512-6aiQeBda4zjcuaugWvim9WsGqisoUk+etmFEsSUMm451/Ic8L/UAb7sRtMj3V+Hdzm6mMjU1VhiSzYUZeBm0Vg==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
@@ -4979,7 +4982,7 @@ snapshots:
       micromark-util-symbol: 2.0.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      react-hook-form: 7.53.0(react@18.3.1)
+      react-hook-form: 7.53.1(react@18.3.1)
       unidiff: 1.0.4
     transitivePeerDependencies:
       - '@codemirror/language'
@@ -7706,7 +7709,7 @@ snapshots:
       '@babel/runtime': 7.25.6
       react: 18.3.1
 
-  react-hook-form@7.53.0(react@18.3.1):
+  react-hook-form@7.53.1(react@18.3.1):
     dependencies:
       react: 18.3.1
 
