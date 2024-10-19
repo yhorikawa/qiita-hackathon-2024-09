@@ -1,3 +1,4 @@
+# @host = https://qiita-hackathon-2024-09-backend-production.horikawa441-32b.workers.dev
 @host = http://localhost:8787
 
 ###
@@ -70,4 +71,3 @@ Content-Type: application/json
 ###
 GET {{host}}/api/v1/users/ba6d5b49-f786-478f-aaf9-b7948b83a05e
 Content-Type: application/json
-

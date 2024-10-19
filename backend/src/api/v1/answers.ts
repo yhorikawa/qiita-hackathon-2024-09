@@ -85,6 +85,35 @@ const routes = app.post(
     };
     await db.createPersonality(c.env.DB, createPersonalityParams);
 
+    const prompt = `2d comic vector illustration style, flat design A guardian spirit, highly detailed, cinematic lighting, peaceful and protective aura. upper body,${gptResponse.profile.description_en}`;
+    const negative_prompt =
+      "(3d:1.8), (realistic:1.8), (line:1.8) (art style:1.8),";
+
+    const inputs = {
+      prompt,
+      negative_prompt,
+      height: 512,
+      width: 512,
+    };
+
+    if (c.env.ENVIROMENT === "dev") {
+      const imageUrl = "https://hackathon-image.horikawa.dev/image.png";
+      db.updateUserImageUrl(c.env.DB, { id: userId, imageUrl });
+      c.status(201);
+      return c.json({ success: true, error: [] });
+    }
+
+    const image = await c.env.AI.run(
+      "@cf/bytedance/stable-diffusion-xl-lightning",
+      inputs,
+    );
+    const fileName = `generate/${crypto.randomUUID()}.png`;
+    await c.env.BUCKET.put(fileName, image, {
+      httpMetadata: { contentType: "image/png" },
+    });
+    const imageUrl = `https://hackathon-image.horikawa.dev/${fileName}`;
+    db.updateUserImageUrl(c.env.DB, { id: userId, imageUrl });
+
     c.status(201);
     return c.json({ success: true, error: [] });
   },

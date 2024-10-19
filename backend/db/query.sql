@@ -34,6 +34,9 @@ SELECT * FROM Users order by created_at asc;
 -- name: getUserById :one
 SELECT * FROM Users WHERE id = @id;
 
+-- name: updateUserImageUrl :exec
+UPDATE Users SET image_url = @image_url WHERE id = @id;
+
 -- name: getAnswersByUserId :many
 SELECT * FROM Answers WHERE user_id = @user_id;
 
