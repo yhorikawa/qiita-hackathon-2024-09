@@ -416,6 +416,19 @@ export type getUsersRow = {
   id: string;
   name: string;
   imageUrl: string | null;
+
+const getAnswersByUserIdQuery = `-- name: getAnswersByUserId :many
+SELECT id, user_id, question_id, answer, created_at, updated_at FROM Answers WHERE user_id = ?1`;
+
+export type getAnswersByUserIdParams = {
+  userId: string;
+};
+
+export type getAnswersByUserIdRow = {
+  id: string;
+  userId: string;
+  questionId: string;
+  answer: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -424,6 +437,12 @@ type RawgetUsersRow = {
   id: string;
   name: string;
   image_url: string | null;
+
+type RawgetAnswersByUserIdRow = {
+  id: string;
+  user_id: string;
+  question_id: string;
+  answer: string;
   created_at: string;
   updated_at: string;
 };
@@ -442,6 +461,24 @@ export function getUsers(
             id: raw.id,
             name: raw.name,
             imageUrl: raw.image_url,
+
+export function getAnswersByUserId(
+  d1: D1Database,
+  args: getAnswersByUserIdParams
+): Query<D1Result<getAnswersByUserIdRow>> {
+  const ps = d1
+    .prepare(getAnswersByUserIdQuery)
+    .bind(args.userId);
+  return {
+    then(onFulfilled?: (value: D1Result<getAnswersByUserIdRow>) => void, onRejected?: (reason?: any) => void) {
+      ps.all<RawgetAnswersByUserIdRow>()
+        .then((r: D1Result<RawgetAnswersByUserIdRow>) => { return {
+          ...r,
+          results: r.results.map((raw: RawgetAnswersByUserIdRow) => { return {
+            id: raw.id,
+            userId: raw.user_id,
+            questionId: raw.question_id,
+            answer: raw.answer,
             createdAt: raw.created_at,
             updatedAt: raw.updated_at,
           }}),
@@ -452,3 +489,33 @@ export function getUsers(
   }
 }
 
+const createPersonalityQuery = `-- name: createPersonality :exec
+INSERT INTO Personalities (id, user_id, openness, conscientiousness, extraversion, agreeableness, neuroticism, description, description_en) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)`;
+
+export type createPersonalityParams = {
+  id: string;
+  userId: string;
+  openness: number;
+  conscientiousness: number;
+  extraversion: number;
+  agreeableness: number;
+  neuroticism: number;
+  description: string;
+  descriptionEn: string;
+};
+
+export function createPersonality(
+  d1: D1Database,
+  args: createPersonalityParams
+): Query<D1Result> {
+  const ps = d1
+    .prepare(createPersonalityQuery)
+    .bind(args.id, args.userId, args.openness, args.conscientiousness, args.extraversion, args.agreeableness, args.neuroticism, args.description, args.descriptionEn);
+  return {
+    then(onFulfilled?: (value: D1Result) => void, onRejected?: (reason?: any) => void) {
+      ps.run()
+        .then(onFulfilled).catch(onRejected);
+    },
+    batch() { return ps; },
+  }
+}

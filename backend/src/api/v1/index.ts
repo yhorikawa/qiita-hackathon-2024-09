@@ -1,6 +1,7 @@
 import type { D1Database } from "@cloudflare/workers-types/experimental";
 import { Hono } from "hono";
 import { fetchChatGPTResponse } from "../../util/openai/openai";
+import answersApi from "./answers";
 import authApi from "./auth";
 import questionsApi from "./questions";
 import roomsApi from "./rooms";
@@ -22,6 +23,7 @@ const api = new Hono<{ Bindings: Bindings }>()
   .route("/questions", questionsApi)
   .route("/rooms", roomsApi)
   .route("users", usersApi)
+  .route("/answers", answersApi)
   .get("/test", async (c) => {
     const response = await fetchChatGPTResponse(
       c.env.OPENAI_API_KEY,
