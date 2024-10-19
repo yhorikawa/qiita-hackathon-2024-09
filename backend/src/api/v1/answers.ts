@@ -26,7 +26,7 @@ app.use("*", async (c, next) => {
   return setJwt(c, next);
 });
 
-const routes = app.get(
+const routes = app.post(
   "/",
   zValidator(
     "json",
