@@ -23,14 +23,16 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={inter.className}>
-        <HeaderLayout />
-        <main className="bg-violet-50">
-          <div className="mx-auto max-w-5xl min-h-svh relative p-12">
-            {children}
-          </div>
-        </main>
-        <FooterLayout />
-        <PrelineScript />
+        <div className="w-[360px] m-auto">
+          <HeaderLayout />
+          <main className="bg-violet-50">
+            <div className="mx-auto max-w-5xl min-h-svh relative p-12">
+              {children}
+            </div>
+          </main>
+          <FooterLayout />
+          <PrelineScript />
+        </div>
       </body>
     </html>
   );
