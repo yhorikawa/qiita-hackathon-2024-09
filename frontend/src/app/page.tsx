@@ -9,8 +9,8 @@ const Page: NextPage = () => {
   const inputId = useId();
 
   return (
-    <section className="bg-white dark:bg-gray-900">
-      <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16">
+    <section className="bg-white dark:bg-gray-900 flex min-h-screen items-center">
+      <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 flex-grow">
         <h1 className="text-2xl font-extrabold tracking-tight leading-normal text-gray-900 dark:text-white">
           守護霊を通じて
           <br />
@@ -38,9 +38,11 @@ const Page: NextPage = () => {
             value={name}
             onInput={(e) => setName(e.currentTarget.value)}
           />
-          <button type="button" onClick={handleAction}>
-            自分だけの守護霊を作る
-          </button>
+          <div className="text-center">
+            <Button type="button" icon={true} onClick={handleAction}>
+              自分だけの守護霊を作る
+            </Button>
+          </div>
         </div>
       </div>
     </section>

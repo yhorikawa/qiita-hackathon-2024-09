@@ -4,6 +4,7 @@ import type { NextPage } from "next";
 import { Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Button } from "#/components/ui";
 import { QUESTIONS } from "#/constants/questions";
 import { usePostAnswers } from "./use-post-question";
 
@@ -56,13 +57,9 @@ const Page: NextPage = () => {
           </div>
         </Fragment>
       ))}
-      <button
-        type="submit"
-        disabled={!isValid}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      >
+      <Button type="submit" icon={true} isDisabled={!isValid}>
         {isValid ? "この回答で守護霊を作成する" : "未入力の項目があります"}
-      </button>
+      </Button>
     </form>
   );
 };
