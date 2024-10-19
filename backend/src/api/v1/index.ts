@@ -5,6 +5,7 @@ import questionsApi from "./questions";
 
 export type Bindings = {
   DB: D1Database;
+  BUCKET: R2Bucket;
   JWT_SECRET: string;
   OPENAI_API_KEY: string;
   ENVIROMENT: string;
