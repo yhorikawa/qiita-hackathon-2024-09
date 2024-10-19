@@ -14,23 +14,24 @@ export type Users = {
 export type Rooms = {
   id: string;
   name: string;
-  ownerId: number;
-  memberId: number | null;
+  ownerId: string;
+  memberId: string | null;
   createdAt: string;
   updatedAt: string;
 };
 
 export type Messages = {
   id: string;
-  roomId: number;
+  roomId: string;
   message: string;
+  messageType: string;
   createdAt: string;
   updatedAt: string;
 };
 
 export type Personalities = {
   id: string;
-  userId: number;
+  userId: string;
   openness: number;
   conscientiousness: number;
   extraversion: number;
@@ -52,8 +53,8 @@ export type Questions = {
 
 export type Answers = {
   id: string;
-  userId: number;
-  questionId: number;
+  userId: string;
+  questionId: string;
   answer: string;
   createdAt: string;
   updatedAt: string;

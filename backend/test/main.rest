@@ -31,3 +31,7 @@ Content-Type: application/json
 ###
 GET {{host}}/api/v1/questions/getOrderNum/1
 Content-Type: application/json
+
+###
+GET {{host}}/api/v1/rooms/95144a33-d37d-0941-2099-882192201c8c
+Content-Type: application/json
