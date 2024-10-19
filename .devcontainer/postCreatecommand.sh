@@ -17,4 +17,4 @@ cp ./frontend/.env.example ./frontend/.env
 
 ## migration
 pnpm -C backend run migrate:local
-pnpm -C backend run seed:local
+# pnpm -C backend run seed:local
