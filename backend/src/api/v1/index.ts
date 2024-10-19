@@ -5,6 +5,7 @@ import answersApi from "./answers";
 import authApi from "./auth";
 import questionsApi from "./questions";
 import roomsApi from "./rooms";
+import usersApi from "./users";
 
 export type Bindings = {
   DB: D1Database;
@@ -21,6 +22,7 @@ const api = new Hono<{ Bindings: Bindings }>()
   .route("/auth", authApi)
   .route("/questions", questionsApi)
   .route("/rooms", roomsApi)
+  .route("users", usersApi)
   .route("/answers", answersApi)
   .get("/test", async (c) => {
     const response = await fetchChatGPTResponse(
