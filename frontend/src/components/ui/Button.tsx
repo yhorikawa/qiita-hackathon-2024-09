@@ -4,6 +4,7 @@ import { twMerge } from "tailwind-merge";
 type Props = {
   type?: "button" | "submit";
   icon?: boolean;
+  isDisabled?: boolean;
   onClick?: () => void;
 } & PropsWithChildren;
 
@@ -11,17 +12,24 @@ export const Button = ({
   children,
   type = "button",
   icon = false,
+  isDisabled = false,
   onClick,
 }: Props) => {
   return (
     <button
       type={type}
-      className="mt-6 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+      className={twMerge(
+        "mt-6 font-medium rounded-lg text-sm px-5 py-3 focus:outline-none",
+        isDisabled
+          ? "bg-gray-400 cursor-not-allowed"
+          : "bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 text-white",
+      )}
       onClick={onClick}
+      disabled={isDisabled}
     >
       <div className={icon ? "flex items-center" : undefined}>
         <p>{children}</p>
-        {icon ? (
+        {icon && !isDisabled ? (
           <svg
             className="w-3.5 h-3.5 ms-2 rtl:rotate-180"
             aria-hidden="true"
