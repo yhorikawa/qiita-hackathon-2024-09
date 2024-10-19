@@ -174,3 +174,130 @@ export function getQuestionByOrderNum(
   }
 }
 
+const getRoomByIdQuery = `-- name: getRoomById :one
+SELECT id, name, owner_id, member_id, created_at, updated_at FROM Rooms AS room WHERE id = ?1`;
+
+export type getRoomByIdParams = {
+  id: string;
+};
+
+export type getRoomByIdRow = {
+  id: string;
+  name: string;
+  ownerId: string;
+  memberId: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type RawgetRoomByIdRow = {
+  id: string;
+  name: string;
+  owner_id: string;
+  member_id: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export function getRoomById(
+  d1: D1Database,
+  args: getRoomByIdParams
+): Query<getRoomByIdRow | null> {
+  const ps = d1
+    .prepare(getRoomByIdQuery)
+    .bind(args.id);
+  return {
+    then(onFulfilled?: (value: getRoomByIdRow | null) => void, onRejected?: (reason?: any) => void) {
+      ps.first<RawgetRoomByIdRow | null>()
+        .then((raw: RawgetRoomByIdRow | null) => raw ? {
+          id: raw.id,
+          name: raw.name,
+          ownerId: raw.owner_id,
+          memberId: raw.member_id,
+          createdAt: raw.created_at,
+          updatedAt: raw.updated_at,
+        } : null)
+        .then(onFulfilled).catch(onRejected);
+    },
+    batch() { return ps; },
+  }
+}
+
+const createRoomQuery = `-- name: createRoom :exec
+INSERT INTO Rooms (id, name, owner_id, member_id) VALUES (?1, ?2, ?3, ?4)`;
+
+export type createRoomParams = {
+  id: string;
+  name: string;
+  ownerId: string;
+  memberId: string | null;
+};
+
+export function createRoom(
+  d1: D1Database,
+  args: createRoomParams
+): Query<D1Result> {
+  const ps = d1
+    .prepare(createRoomQuery)
+    .bind(args.id, args.name, args.ownerId, args.memberId);
+  return {
+    then(onFulfilled?: (value: D1Result) => void, onRejected?: (reason?: any) => void) {
+      ps.run()
+        .then(onFulfilled).catch(onRejected);
+    },
+    batch() { return ps; },
+  }
+}
+
+const getMessagesByRoomIdQuery = `-- name: getMessagesByRoomId :many
+SELECT id, room_id, message, message_type, created_at, updated_at FROM Messages WHERE room_id = ?1 order by created_at asc`;
+
+export type getMessagesByRoomIdParams = {
+  roomId: string;
+};
+
+export type getMessagesByRoomIdRow = {
+  id: string;
+  roomId: string;
+  message: string;
+  messageType: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type RawgetMessagesByRoomIdRow = {
+  id: string;
+  room_id: string;
+  message: string;
+  message_type: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export function getMessagesByRoomId(
+  d1: D1Database,
+  args: getMessagesByRoomIdParams
+): Query<D1Result<getMessagesByRoomIdRow>> {
+  const ps = d1
+    .prepare(getMessagesByRoomIdQuery)
+    .bind(args.roomId);
+  return {
+    then(onFulfilled?: (value: D1Result<getMessagesByRoomIdRow>) => void, onRejected?: (reason?: any) => void) {
+      ps.all<RawgetMessagesByRoomIdRow>()
+        .then((r: D1Result<RawgetMessagesByRoomIdRow>) => { return {
+          ...r,
+          results: r.results.map((raw: RawgetMessagesByRoomIdRow) => { return {
+            id: raw.id,
+            roomId: raw.room_id,
+            message: raw.message,
+            messageType: raw.message_type,
+            createdAt: raw.created_at,
+            updatedAt: raw.updated_at,
+          }}),
+        }})
+        .then(onFulfilled).catch(onRejected);
+    },
+    batch() { return ps; },
+  }
+}
+
