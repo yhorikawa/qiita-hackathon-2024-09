@@ -29,20 +29,20 @@ export const usePostAnswers = () => {
   const { trigger } = useSWRMutation("postMessage", fetcher, {
     onSuccess,
   });
-  const [answers, setAnswers] = useState<Answer[]>([]);
 
-  const handleAction = useCallback(async () => {
-    try {
-      await trigger({ answers: answers });
-    } catch (error) {
-      console.error("Error occurred:", error);
-    } finally {
-    }
-  }, [trigger, answers]);
+  const handleAction = useCallback(
+    async (answers: Answer[]) => {
+      try {
+        await trigger({ answers: answers });
+      } catch (error) {
+        console.error("Error occurred:", error);
+      } finally {
+      }
+    },
+    [trigger],
+  );
 
   return {
-    answers,
-    setAnswers,
     handleAction,
   };
 };

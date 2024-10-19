@@ -27,17 +27,16 @@ const Page: NextPage = () => {
     resolver: zodResolver(schema),
     mode: "onChange",
   });
-  const { setAnswers, handleAction } = usePostAnswers();
+  const { handleAction } = usePostAnswers();
 
   const onSubmit = (data: FormValues) => {
-    setAnswers([
+    handleAction([
       { uuid: QUESTIONS[0].id, answer: data.extraversion },
       { uuid: QUESTIONS[1].id, answer: data.agreeableness },
       { uuid: QUESTIONS[2].id, answer: data.conscientiousness },
       { uuid: QUESTIONS[3].id, answer: data.neuroticism },
       { uuid: QUESTIONS[4].id, answer: data.openness },
     ]);
-    handleAction();
   };
 
   console.error(errors);
