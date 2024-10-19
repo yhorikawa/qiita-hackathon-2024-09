@@ -31,8 +31,14 @@ INSERT INTO Answers (id, user_id, question_id, answer) VALUES (@id, @user_id, @q
 -- name: getUsers :many
 SELECT * FROM Users order by created_at asc;
 
+-- name: getUserById :one
+SELECT * FROM Users WHERE id = @id;
+
 -- name: getAnswersByUserId :many
 SELECT * FROM Answers WHERE user_id = @user_id;
 
 -- name: createPersonality :exec
 INSERT INTO Personalities (id, user_id, openness, conscientiousness, extraversion, agreeableness, neuroticism, description, description_en) VALUES (@id, @user_id, @openness, @conscientiousness, @extraversion, @agreeableness, @neuroticism, @description, @description_en);
+
+-- name: getPersonalityByUserId :one
+SELECT * FROM Personalities WHERE user_id = @user_id;
