@@ -13,9 +13,7 @@ const fetcher = async (
   { arg }: { arg: { answers: Answer[] } },
 ) => {
   const res = await client.api.v1.answers.$post({
-    json: {
-      answers: arg.answers,
-    },
+    json: arg.answers,
   });
   if (!res.ok) throw new Error(String(res.status));
   return res.ok;
