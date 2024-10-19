@@ -4,6 +4,7 @@ import { jwt } from "hono/jwt";
 import { z } from "zod";
 import type * as model from "../../gen/sqlc/models";
 import * as db from "../../gen/sqlc/querier";
+import { fetchChatResponse } from "../../util/openai";
 import type { Bindings } from "./index";
 
 interface RoomResponse {
@@ -19,6 +20,11 @@ interface MessageResponse {
 }
 
 const app = new Hono<{ Bindings: Bindings }>();
+
+app.use("*", async (c, next) => {
+  const setJwt = await jwt({ secret: c.env.JWT_SECRET, cookie: "accessToken" });
+  return setJwt(c, next);
+});
 
 const routes = app
   .get(
@@ -58,6 +64,7 @@ const routes = app
 
   .post(
     "/:id/messages",
+    zValidator("json", z.object({ message: z.string() })),
     zValidator(
       "param",
       z.object({
@@ -66,6 +73,10 @@ const routes = app
     ),
     async (c) => {
       const { id } = await c.req.valid("param");
+      const { message } = await c.req.valid("json");
+
+      const payload = c.get("jwtPayload");
+      const userId = payload.id;
 
       const response: MessageResponse = {
         success: false,
@@ -83,9 +94,29 @@ const routes = app
       await db.createMessage(c.env.DB, {
         id: crypto.randomUUID(),
         roomId: room.id,
-        userId: "ba6d5b49-f786-478f-aaf9-b7948b83a05e", // ちゃんと取得する
-        message: "Hello, World!", // ちゃんと取得する
-        messageType: "text", // ちゃんと取得する
+        userId: userId,
+        message: message,
+        messageType: "general",
+      });
+
+      const messages = [
+        { role: "system", content: autoChat },
+        {
+          role: "user",
+          content: message,
+        },
+      ];
+      const chatGPTResponse = await fetchChatResponse(
+        c.env.OPENAI_API_KEY,
+        messages,
+      );
+
+      await db.createMessage(c.env.DB, {
+        id: crypto.randomUUID(),
+        roomId: room.id,
+        userId: room.memberId ?? crypto.randomUUID(),
+        message: chatGPTResponse.choices[0].message.content,
+        messageType: "autoAi",
       });
 
       response.success = true;
@@ -94,3 +125,11 @@ const routes = app
   );
 
 export default routes;
+
+const autoChat = `
+  必ず日本語で答えてください。
+
+  あなたは、相談に乗るプロです。
+  相手の質問に対して、適切なアドバイスをしてください。
+  また、時には疑問を投げかけて、相手に寄り添ってください。
+`;
