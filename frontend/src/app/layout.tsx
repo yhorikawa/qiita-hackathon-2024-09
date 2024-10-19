@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { PrelineScript } from "./_dependencies/PrelineScript";
 import "./globals.css";
 import "@mdxeditor/editor/style.css";
 import { FooterLayout } from "#/components/FooterLayout";
@@ -31,7 +30,6 @@ export default function RootLayout({
             <Menu />
           </main>
           <FooterLayout />
-          <PrelineScript />
         </div>
       </body>
     </html>

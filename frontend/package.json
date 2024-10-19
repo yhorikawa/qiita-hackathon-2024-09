@@ -12,6 +12,7 @@
     "pages:deploy": "pnpm pages:build && wrangler pages deploy"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
     "@mdxeditor/editor": "^3.11.5",
     "@radix-ui/react-dropdown-menu": "^2.1.1",
     "class-variance-authority": "^0.7.0",
@@ -25,11 +26,13 @@
     "preline": "^2.4.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.1",
     "react-textarea-autosize": "^8.5.3",
     "react-use": "^17.5.1",
     "swr": "^2.2.5",
     "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@cloudflare/next-on-pages": "^1.13.2",
