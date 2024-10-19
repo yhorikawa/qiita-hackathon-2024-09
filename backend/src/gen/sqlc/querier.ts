@@ -498,6 +498,30 @@ export function getUserById(
   }
 }
 
+const updateUserImageUrlQuery = `-- name: updateUserImageUrl :exec
+UPDATE Users SET image_url = ?1 WHERE id = ?2`;
+
+export type updateUserImageUrlParams = {
+  imageUrl: string | null;
+  id: string;
+};
+
+export function updateUserImageUrl(
+  d1: D1Database,
+  args: updateUserImageUrlParams
+): Query<D1Result> {
+  const ps = d1
+    .prepare(updateUserImageUrlQuery)
+    .bind(args.imageUrl, args.id);
+  return {
+    then(onFulfilled?: (value: D1Result) => void, onRejected?: (reason?: any) => void) {
+      ps.run()
+        .then(onFulfilled).catch(onRejected);
+    },
+    batch() { return ps; },
+  }
+}
+
 const getAnswersByUserIdQuery = `-- name: getAnswersByUserId :many
 SELECT id, user_id, question_id, answer, created_at, updated_at FROM Answers WHERE user_id = ?1`;
 

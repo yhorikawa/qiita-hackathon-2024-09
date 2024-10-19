@@ -1,3 +1,4 @@
+# @host = https://qiita-hackathon-2024-09-backend-production.horikawa441-32b.workers.dev
 @host = http://localhost:8787
 
 ###
