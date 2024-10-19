@@ -28,6 +28,79 @@ app.use("*", async (c, next) => {
 
 const routes = app
   .get(
+    "/redirect-room",
+    zValidator("json", z.object({ memberId: z.string() })),
+    async (c) => {
+      const payload = c.get("jwtPayload");
+      const userId = payload.id;
+      const { memberId } = await c.req.valid("json");
+
+      const room = await db.getRoomByOwnerIdAndMemberId(c.env.DB, {
+        ownerId: userId,
+        memberId,
+      });
+      if (!room) {
+        const uuid = crypto.randomUUID();
+        await db.createRoom(c.env.DB, {
+          id: uuid,
+          name: "Chat Room",
+          ownerId: userId,
+          memberId,
+        });
+
+        const room = await db.getRoomById(c.env.DB, { id: uuid });
+        if (!room) {
+          c.status(404);
+          return c.text("Room not found");
+        }
+
+        const messages = [
+          { role: "system", content: autoChat },
+          {
+            role: "user",
+            content: "こんにちは",
+          },
+        ];
+        const chatGPTResponse = await fetchChatResponse(
+          c.env.OPENAI_API_KEY,
+          messages,
+        );
+
+        await db.createMessage(c.env.DB, {
+          id: crypto.randomUUID(),
+          roomId: room.id,
+          userId,
+          message: chatGPTResponse.choices[0].message.content,
+          messageType: "autoAi",
+        });
+        return c.redirect(`/rooms/${room.id}`);
+      }
+
+      const messages = [
+        { role: "system", content: autoChat },
+        {
+          role: "user",
+          content: "こんにちは",
+        },
+      ];
+      const chatGPTResponse = await fetchChatResponse(
+        c.env.OPENAI_API_KEY,
+        messages,
+      );
+
+      await db.createMessage(c.env.DB, {
+        id: crypto.randomUUID(),
+        roomId: room.id,
+        userId,
+        message: chatGPTResponse.choices[0].message.content,
+        messageType: "autoAi",
+      });
+
+      return c.redirect(`/rooms/${room.id}`);
+    },
+  )
+
+  .get(
     "/:id",
     zValidator(
       "param",

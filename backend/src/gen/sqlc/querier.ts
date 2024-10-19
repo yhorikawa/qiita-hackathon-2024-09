@@ -669,3 +669,53 @@ export function getPersonalityByUserId(
   }
 }
 
+const getRoomByOwnerIdAndMemberIdQuery = `-- name: getRoomByOwnerIdAndMemberId :one
+SELECT id, name, owner_id, member_id, created_at, updated_at FROM Rooms WHERE owner_id = ?1 AND member_id = ?2`;
+
+export type getRoomByOwnerIdAndMemberIdParams = {
+  ownerId: string;
+  memberId: string | null;
+};
+
+export type getRoomByOwnerIdAndMemberIdRow = {
+  id: string;
+  name: string;
+  ownerId: string;
+  memberId: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type RawgetRoomByOwnerIdAndMemberIdRow = {
+  id: string;
+  name: string;
+  owner_id: string;
+  member_id: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export function getRoomByOwnerIdAndMemberId(
+  d1: D1Database,
+  args: getRoomByOwnerIdAndMemberIdParams
+): Query<getRoomByOwnerIdAndMemberIdRow | null> {
+  const ps = d1
+    .prepare(getRoomByOwnerIdAndMemberIdQuery)
+    .bind(args.ownerId, args.memberId);
+  return {
+    then(onFulfilled?: (value: getRoomByOwnerIdAndMemberIdRow | null) => void, onRejected?: (reason?: any) => void) {
+      ps.first<RawgetRoomByOwnerIdAndMemberIdRow | null>()
+        .then((raw: RawgetRoomByOwnerIdAndMemberIdRow | null) => raw ? {
+          id: raw.id,
+          name: raw.name,
+          ownerId: raw.owner_id,
+          memberId: raw.member_id,
+          createdAt: raw.created_at,
+          updatedAt: raw.updated_at,
+        } : null)
+        .then(onFulfilled).catch(onRejected);
+    },
+    batch() { return ps; },
+  }
+}
+

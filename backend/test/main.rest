@@ -71,3 +71,11 @@ Content-Type: application/json
 ###
 GET {{host}}/api/v1/users/ba6d5b49-f786-478f-aaf9-b7948b83a05e
 Content-Type: application/json
+
+###
+GET {{host}}/api/v1/rooms/redirect-room
+Content-Type: application/json
+
+  {
+    "memberId": "ba6d5b49-f786-478f-aaf9-b7948b8eerfd"
+  }
