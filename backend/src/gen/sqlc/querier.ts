@@ -331,3 +331,29 @@ export function createMessage(
   }
 }
 
+const createAnswerQuery = `-- name: createAnswer :exec
+INSERT INTO Answers (id, user_id, question_id, answer) VALUES (?1, ?2, ?3, ?4)`;
+
+export type createAnswerParams = {
+  id: string;
+  userId: string;
+  questionId: string;
+  answer: string;
+};
+
+export function createAnswer(
+  d1: D1Database,
+  args: createAnswerParams
+): Query<D1Result> {
+  const ps = d1
+    .prepare(createAnswerQuery)
+    .bind(args.id, args.userId, args.questionId, args.answer);
+  return {
+    then(onFulfilled?: (value: D1Result) => void, onRejected?: (reason?: any) => void) {
+      ps.run()
+        .then(onFulfilled).catch(onRejected);
+    },
+    batch() { return ps; },
+  }
+}
+
