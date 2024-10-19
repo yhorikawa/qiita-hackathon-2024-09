@@ -18,12 +18,6 @@ interface UserResponse {
   error: string[];
 }
 
-interface UserMeResponse {
-  success: boolean;
-  data: { user: model.Users };
-  error: string[];
-}
-
 const app = new Hono<{ Bindings: Bindings }>();
 
 app.use("*", async (c, next) => {
@@ -34,7 +28,6 @@ app.use("*", async (c, next) => {
 const routes = app
   .get("/", async (c) => {
     const users = await db.getUsers(c.env.DB);
-    // TODO: userに紐づくroomを取得する
 
     const response: UsersResponse = {
       success: true,
@@ -49,10 +42,11 @@ const routes = app
     const payload = c.get("jwtPayload");
     const id = payload.id;
 
-    const response: UserMeResponse = {
+    const response: UserResponse = {
       success: false,
       data: {
         user: {} as model.Users,
+        pasonality: {} as model.Personalities,
       },
       error: [],
     };
@@ -64,8 +58,18 @@ const routes = app
       return c.json(response);
     }
 
+    const personality = await db.getPersonalityByUserId(c.env.DB, {
+      userId: user.id,
+    });
+    if (!personality) {
+      c.status(404);
+      response.error.push("Parsonality not found");
+      return c.json(response);
+    }
+
     response.success = true;
     response.data.user = user;
+    response.data.pasonality = personality;
     c.status(200);
     return c.json(response);
   })
