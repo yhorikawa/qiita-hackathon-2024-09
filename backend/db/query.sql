@@ -42,3 +42,6 @@ INSERT INTO Personalities (id, user_id, openness, conscientiousness, extraversio
 
 -- name: getPersonalityByUserId :one
 SELECT * FROM Personalities WHERE user_id = @user_id;
+
+-- name: getRoomByOwnerIdAndMemberId :one
+SELECT * FROM Rooms WHERE owner_id = @owner_id AND member_id = @member_id;
