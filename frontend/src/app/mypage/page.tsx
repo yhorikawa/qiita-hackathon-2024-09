@@ -1,13 +1,19 @@
 "use client";
 import type { NextPage } from "next";
 import { notFound } from "next/navigation";
-import { Menu, Notice, Profile } from "#/components/ui";
+import { Loading, Menu, Notice, Profile } from "#/components/ui";
 import { useGetMe } from "../_dependencies/use-get-me";
 
 const Page: NextPage = () => {
   const { data, isLoading, error } = useGetMe();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="flex flex-col gap-6">
+        <p>Loading...</p>
+        <Loading />
+      </div>
+    );
   if (!data?.success || error) return notFound();
 
   //TODO: MEMO化しよう

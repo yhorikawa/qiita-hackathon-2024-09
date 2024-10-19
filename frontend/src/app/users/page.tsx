@@ -3,6 +3,7 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Loading } from "#/components/ui";
 import { useGetUsers } from "./use-get-users";
 
 const Page: NextPage = () => {
@@ -10,7 +11,13 @@ const Page: NextPage = () => {
 
   const handleClick = () => {};
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="flex flex-col gap-6">
+        <p>Loading...</p>
+        <Loading />
+      </div>
+    );
 
   console.log(data);
   if (!data?.success || error) return notFound();

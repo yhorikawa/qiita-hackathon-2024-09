@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Fragment } from "react";
-import { ChatBallon } from "#/components/ui";
+import { ChatBallon, Loading } from "#/components/ui";
 import { useGetRooms } from "./use-get-rooms";
 
 type Props = {
@@ -17,7 +17,13 @@ type Props = {
 const Page: NextPage<Props> = ({ params: { id } }) => {
   const { data, isLoading, error } = useGetRooms(id);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="flex flex-col gap-6">
+        <p>Loading...</p>
+        <Loading />
+      </div>
+    );
   if (!data?.success || error) return notFound();
 
   return (

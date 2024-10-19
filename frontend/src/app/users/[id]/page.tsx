@@ -2,6 +2,7 @@
 import type { NextPage } from "next";
 import { notFound } from "next/navigation";
 import { Menu, Profile } from "#/components/ui";
+import { Loading } from "#/components/ui";
 import { useGetUser } from "./use-get-me";
 
 const profile = {
@@ -52,7 +53,13 @@ type Props = {
 const Page: NextPage<Props> = ({ params: { id } }) => {
   const { data, isLoading, error } = useGetUser(id);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="flex flex-col gap-6">
+        <p>Loading...</p>
+        <Loading />
+      </div>
+    );
   if (!data?.success || error) return notFound();
 
   //TODO: MEMO化しよう
