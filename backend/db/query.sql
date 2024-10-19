@@ -24,3 +24,9 @@ INSERT INTO Messages (id, room_id, user_id, message, message_type) VALUES (@id, 
 
 -- name: createAnswer :exec
 INSERT INTO Answers (id, user_id, question_id, answer) VALUES (@id, @user_id, @question_id, @answer);
+
+-- name: getAnswersByUserId :many
+SELECT * FROM Answers WHERE user_id = @user_id;
+
+-- name: createPersonality :exec
+INSERT INTO Personalities (id, user_id, openness, conscientiousness, extraversion, agreeableness, neuroticism, description, description_en) VALUES (@id, @user_id, @openness, @conscientiousness, @extraversion, @agreeableness, @neuroticism, @description, @description_en);
