@@ -35,3 +35,7 @@ Content-Type: application/json
 ###
 GET {{host}}/api/v1/rooms/95144a33-d37d-0941-2099-882192201c8c
 Content-Type: application/json
+
+###
+POST {{host}}/api/v1/rooms/95144a33-d37d-0941-2099-882192201c8c/messages
+Content-Type: application/json

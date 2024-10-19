@@ -23,6 +23,7 @@ export type Rooms = {
 export type Messages = {
   id: string;
   roomId: string;
+  userId: string;
   message: string;
   messageType: string;
   createdAt: string;
@@ -38,6 +39,7 @@ export type Personalities = {
   agreeableness: number;
   neuroticism: number;
   description: string;
+  descriptionEn: string;
   createdAt: string;
   updatedAt: string;
 };
