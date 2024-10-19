@@ -22,7 +22,7 @@ export default function RootLayout({
     <html lang="ja">
       <body className={inter.className}>
         <div className="w-[390px] m-auto">
-          <header className="h-8 mt-12 px-4 py-2 flex items-center">
+          <header className="h-8 px-4 py-2 flex items-center">
             <h1 className="text-violet-500 text-xl font-bold">
               なんかいい感じのロゴ
             </h1>
