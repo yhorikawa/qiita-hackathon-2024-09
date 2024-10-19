@@ -1,36 +1,28 @@
+"use client";
 import type { NextPage } from "next";
 import Image from "next/image";
-
-const json = [
-  {
-    id: 1,
-    name: "Alice",
-    image: "/alice.jpg",
-  },
-  {
-    id: 2,
-    name: "Bob",
-    image: "/alice.jpg",
-  },
-  {
-    id: 3,
-    name: "Charlie",
-    image: "/alice.jpg",
-  },
-];
+import { notFound } from "next/navigation";
+import { useGetUsers } from "./use-get-users";
 
 const Page: NextPage = () => {
+  const { data, isLoading, error } = useGetUsers();
+
+  if (isLoading) return <div>Loading...</div>;
+
+  console.log(data);
+  if (!data?.success || error) return notFound();
+
   return (
     <div className="m-4">
       <ul className="rounded-lg bg-white shadow-sm border border-solid border-gray-200">
-        {json.map(({ image, id, name }) => (
+        {data.data.users.map(({ imageUrl, id, name }) => (
           <li
-            className="w-full py-2 px-4 flex justify-between bg-white"
+            className="w-full p-4 flex justify-between bg-white border-b border-b-solid border-b-gray-200"
             key={id}
           >
-            <span className="flex">
-              <Image src={image} alt={name} width={20} height={20} />
-            </span>
+            {imageUrl && (
+              <Image src={imageUrl} alt={name} width={20} height={20} />
+            )}
             <span className="flex-1">{name}</span>
             <span>
               <svg
