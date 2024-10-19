@@ -17,11 +17,32 @@ const Page: NextPage = () => {
       <ul className="rounded-lg bg-white shadow-sm border border-solid border-gray-200">
         {data.data.users.map(({ imageUrl, id, name }) => (
           <li
-            className="w-full p-4 flex justify-between bg-white border-b border-b-solid border-b-gray-200"
+            className="w-full p-4 flex justify-between bg-white border-b border-b-solid border-b-gray-200 gap-x-2"
             key={id}
           >
-            {imageUrl && (
-              <Image src={imageUrl} alt={name} width={20} height={20} />
+            {imageUrl ? (
+              <Image
+                className="w-6 h-6 rounded-full"
+                src={imageUrl}
+                alt={name}
+                width={20}
+                height={20}
+              />
+            ) : (
+              <svg
+                className="w-6 h-6 text-gray-400"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                  clipRule="evenodd"
+                >
+                  <title>svg</title>
+                </path>
+              </svg>
             )}
             <span className="flex-1">{name}</span>
             <span>
