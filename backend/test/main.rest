@@ -43,3 +43,22 @@ Content-Type: application/json
 ###
 POST {{host}}/api/v1/rooms/95144a33-d37d-0941-2099-882192201c8c/messages
 Content-Type: application/json
+
+###
+POST {{host}}/api/v1/answers
+Content-Type: application/json
+
+[
+  {
+    "uuid": "af99c5df-5c1f-4491-982b-2d6f068ffa03",
+    "answer": "最近、友人と一緒に旅行に行きました。新しい場所を訪れることができてとても楽しかったです。友人との交流を通じて、新しい文化や習慣に触れることができ、とても刺激的でした。"
+  },
+  {
+    "uuid": "c4c76868-5b04-4dff-b052-14d756534524",
+    "answer": "最近、友人と一緒に旅行に行きました。新しい場所を訪れることができてとても楽しかったです。友人との交流を通じて、新しい文化や習慣に触れることができ、とても刺激的でした。"
+  }
+]
+
+###
+GET {{host}}/api/v1/users/ba6d5b49-f786-478f-aaf9-b7948b83a05e
+Content-Type: application/json

@@ -26,7 +26,7 @@ app.use("*", async (c, next) => {
   return setJwt(c, next);
 });
 
-const routes = app.get(
+const routes = app.post(
   "/",
   zValidator(
     "json",
@@ -50,7 +50,28 @@ const routes = app.get(
         answer: answer.answer,
       });
     }
-    const gptResponse = await fetchPersonalities(c, userId);
+
+    const fetchAttempt = async () => {
+      for (let i = 0; i < 3; i++) {
+        try {
+          const response = await fetchPersonalities(c, userId);
+          return response;
+        } catch (e) {
+          console.log(`Failed to fetch personality. Attempt ${i + 1}`);
+          console.error(e);
+        }
+      }
+    };
+
+    const gptResponse = await fetchAttempt();
+    if (!gptResponse) {
+      c.status(500);
+      return c.json({
+        success: false,
+        error: ["Failed to fetch personality"],
+      });
+    }
+
     const createPersonalityParams = {
       id: crypto.randomUUID(),
       userId,
@@ -76,6 +97,59 @@ const fetchPersonalities = async (
   const questions = await db.getQuestions(c.env.DB);
   const answers = await db.getAnswersByUserId(c.env.DB, { userId });
 
+  const jsonSchema = {
+    strict: true,
+    name: "big5_scores",
+    schema: {
+      type: "object",
+      properties: {
+        big5_scores: {
+          type: "object",
+          properties: {
+            openness: {
+              type: "number",
+            },
+            conscientiousness: {
+              type: "number",
+            },
+            extraversion: {
+              type: "number",
+            },
+            agreeableness: {
+              type: "number",
+            },
+            neuroticism: {
+              type: "number",
+            },
+          },
+          additionalProperties: false,
+          required: [
+            "openness",
+            "conscientiousness",
+            "extraversion",
+            "agreeableness",
+            "neuroticism",
+          ],
+        },
+        profile: {
+          type: "object",
+          properties: {
+            description: {
+              type: "string",
+            },
+            description_en: {
+              type: "string",
+            },
+          },
+          additionalProperties: false,
+          required: ["description", "description_en"],
+        },
+      },
+      additionalProperties: false,
+      required: ["big5_scores", "profile"],
+    },
+  };
+
   const response = await fetchChatGPTResponse(
     c.env.OPENAI_API_KEY,
     [
@@ -91,7 +165,12 @@ const fetchPersonalities = async (
         `,
       })),
     ],
-    { response_format: { type: "json_object" } },
+    {
+      response_format: {
+        type: "json_schema",
+        json_schema: jsonSchema,
+      },
+    },
   );
 
   const json = response.choices[0].message.content;
