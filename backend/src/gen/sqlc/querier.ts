@@ -79,3 +79,98 @@ export function getUser(
   }
 }
 
+const getQuestionsQuery = `-- name: getQuestions :many
+SELECT id, type, order_num, question, created_at, updated_at FROM Questions order by order_num asc`;
+
+export type getQuestionsRow = {
+  id: string;
+  type: string;
+  orderNum: number;
+  question: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type RawgetQuestionsRow = {
+  id: string;
+  type: string;
+  order_num: number;
+  question: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export function getQuestions(
+  d1: D1Database
+): Query<D1Result<getQuestionsRow>> {
+  const ps = d1
+    .prepare(getQuestionsQuery);
+  return {
+    then(onFulfilled?: (value: D1Result<getQuestionsRow>) => void, onRejected?: (reason?: any) => void) {
+      ps.all<RawgetQuestionsRow>()
+        .then((r: D1Result<RawgetQuestionsRow>) => { return {
+          ...r,
+          results: r.results.map((raw: RawgetQuestionsRow) => { return {
+            id: raw.id,
+            type: raw.type,
+            orderNum: raw.order_num,
+            question: raw.question,
+            createdAt: raw.created_at,
+            updatedAt: raw.updated_at,
+          }}),
+        }})
+        .then(onFulfilled).catch(onRejected);
+    },
+    batch() { return ps; },
+  }
+}
+
+const getQuestionByOrderNumQuery = `-- name: getQuestionByOrderNum :one
+SELECT id, type, order_num, question, created_at, updated_at FROM Questions WHERE order_num = ?1`;
+
+export type getQuestionByOrderNumParams = {
+  orderNum: number;
+};
+
+export type getQuestionByOrderNumRow = {
+  id: string;
+  type: string;
+  orderNum: number;
+  question: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type RawgetQuestionByOrderNumRow = {
+  id: string;
+  type: string;
+  order_num: number;
+  question: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export function getQuestionByOrderNum(
+  d1: D1Database,
+  args: getQuestionByOrderNumParams
+): Query<getQuestionByOrderNumRow | null> {
+  const ps = d1
+    .prepare(getQuestionByOrderNumQuery)
+    .bind(args.orderNum);
+  return {
+    then(onFulfilled?: (value: getQuestionByOrderNumRow | null) => void, onRejected?: (reason?: any) => void) {
+      ps.first<RawgetQuestionByOrderNumRow | null>()
+        .then((raw: RawgetQuestionByOrderNumRow | null) => raw ? {
+          id: raw.id,
+          type: raw.type,
+          orderNum: raw.order_num,
+          question: raw.question,
+          createdAt: raw.created_at,
+          updatedAt: raw.updated_at,
+        } : null)
+        .then(onFulfilled).catch(onRejected);
+    },
+    batch() { return ps; },
+  }
+}
+

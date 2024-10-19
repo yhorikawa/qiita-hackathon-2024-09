@@ -42,7 +42,8 @@ CREATE TABLE IF NOT EXISTS Personalities (
 
 CREATE TABLE IF NOT EXISTS Questions (
   id TEXT PRIMARY KEY,
-  order_number INTEGER NOT NULL,
+  type TEXT NOT NULL,
+  order_num INTEGER NOT NULL,
   question TEXT NOT NULL,
   created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
   updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime'))
