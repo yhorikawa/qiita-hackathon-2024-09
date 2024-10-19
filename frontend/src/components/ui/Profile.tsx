@@ -4,12 +4,13 @@ import { twMerge } from "tailwind-merge";
 type MeterProps = {
   label: string;
   color: string;
+  value: number;
+  merterColor: string;
 };
 
-const Meter = ({ label, color }: MeterProps) => {
+const Meter = ({ label, color, value, merterColor }: MeterProps) => {
   const bgColor = `bg-${color}-100`;
   const textColor = `text-${color}-800`;
-  const meterColor = `custom-meter-${color}`;
 
   return (
     <div className="flex gap-3 items-center">
@@ -26,10 +27,10 @@ const Meter = ({ label, color }: MeterProps) => {
         id="fuel"
         min="0"
         max="100"
-        value="50"
-        className={twMerge("flex-grow", meterColor)}
+        value={value}
+        className={twMerge("flex-grow", merterColor)}
       >
-        at 50/100
+        at {value}/100
       </meter>
     </div>
   );
@@ -52,11 +53,36 @@ export const Profile = () => {
         生成された守護霊の紹介文が入ります。以下はダミーテキスト。山路を登りながら、こう考えた。智に働けば角が立つ。情に棹させば流される。意地を通せば窮屈だ。とかくに人の世は住みにくい。住みにくさが高じると、安い所へ引き越したくなる。
       </p>
       <div className="flex flex-col gap-4 w-full px-4">
-        <Meter label="社交性" color="red" />
-        <Meter label="好奇心" color="yellow" />
-        <Meter label="感情安定性" color="green" />
-        <Meter label="勤勉性" color="blue" />
-        <Meter label="協調性" color="purple" />
+        <Meter
+          label="社交性"
+          color="red"
+          value={50}
+          merterColor="custom-meter-red"
+        />
+        <Meter
+          label="好奇心"
+          color="yellow"
+          value={30}
+          merterColor="custom-meter-yellow"
+        />
+        <Meter
+          label="感情安定性"
+          color="green"
+          value={20}
+          merterColor="custom-meter-green"
+        />
+        <Meter
+          label="勤勉性"
+          color="blue"
+          value={70}
+          merterColor="custom-meter-blue"
+        />
+        <Meter
+          label="協調性"
+          color="purple"
+          value={90}
+          merterColor="custom-meter-purple"
+        />
       </div>
     </div>
   );
