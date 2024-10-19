@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Button } from "#/components/ui";
 
 const Page: NextPage = async () => {
+  //memo: 必要かと思ってからの関数を用意しましたが不要なら置き換えるか削除してください
   const handleAction = () => {
     console.log("handleAction");
   };
