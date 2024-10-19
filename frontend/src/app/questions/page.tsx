@@ -26,7 +26,7 @@ const Page: NextPage = () => {
     resolver: zodResolver(schema),
     mode: "onChange",
   });
-  const { answers, setAnswers, handleAction } = usePostAnswers();
+  const { setAnswers, handleAction } = usePostAnswers();
 
   const onSubmit = (data: FormValues) => {
     setAnswers([
