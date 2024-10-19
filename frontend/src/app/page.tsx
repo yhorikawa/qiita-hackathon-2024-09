@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import { ChatBallon } from "#/components/ui/ChatBalloon";
 import { Card } from "#/components/ui/card";
 import { client } from "#/lib/client";
 
@@ -12,6 +13,7 @@ const Page: NextPage = async () => {
         マンホールは大体円形だっ! <br />
         API通信テスト{message}
       </Card>
+      <ChatBallon message="Hello, World!" position="right" />
     </div>
   );
 };
