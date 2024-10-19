@@ -5,6 +5,7 @@ import { Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { QUESTIONS } from "#/constants/questions";
+import { usePostAnswers } from "./use-post-question";
 
 const schema = z.object({
   extraversion: z.string().min(1),
@@ -25,11 +26,20 @@ const Page: NextPage = () => {
     resolver: zodResolver(schema),
     mode: "onChange",
   });
+  const { answers, setAnswers, handleAction } = usePostAnswers();
 
   const onSubmit = (data: FormValues) => {
-    console.log("---------------");
-    console.log(data);
+    setAnswers([
+      { uuid: QUESTIONS[0].id, answer: data.extraversion },
+      { uuid: QUESTIONS[1].id, answer: data.agreeableness },
+      { uuid: QUESTIONS[2].id, answer: data.conscientiousness },
+      { uuid: QUESTIONS[3].id, answer: data.neuroticism },
+      { uuid: QUESTIONS[4].id, answer: data.openness },
+    ]);
+    handleAction();
   };
+
+  console.error(errors);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
