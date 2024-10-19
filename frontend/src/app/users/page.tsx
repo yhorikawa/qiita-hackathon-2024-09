@@ -8,6 +8,8 @@ import { useGetUsers } from "./use-get-users";
 const Page: NextPage = () => {
   const { data, isLoading, error } = useGetUsers();
 
+  const handleClick = () => {};
+
   if (isLoading) return <div>Loading...</div>;
 
   console.log(data);
@@ -47,7 +49,7 @@ const Page: NextPage = () => {
                 </svg>
               )}
               <span className="flex-1">{name}</span>
-              <Link href={`/rooms/${id}`}>
+              <button type="button" onClick={handleClick}>
                 <svg
                   className="text-gray-400 w-[24px] h-[24px] dark:text-white"
                   aria-hidden="true"
@@ -63,7 +65,7 @@ const Page: NextPage = () => {
                     clipRule="evenodd"
                   />
                 </svg>
-              </Link>
+              </button>
             </Link>
           </li>
         ))}

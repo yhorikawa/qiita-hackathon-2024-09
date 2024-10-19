@@ -14,7 +14,7 @@ POST {{host}}/api/v1/auth/register
 Content-Type: application/json
 
 {
-  "name": "test1111"
+  "name": "ba6d5b49-f786-478f-aaf9-b7948b83a05e"
 }
 
 ###
@@ -22,7 +22,7 @@ POST {{host}}/api/v1/auth/signin
 Content-Type: application/json
 
 {
-  "name": "test1111"
+  "name": "ba6d5b49-f786-478f-aaf9-b7948b83a05e"
 }
 
 ###
