@@ -12,6 +12,7 @@
     "pages:deploy": "pnpm pages:build && wrangler pages deploy"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
     "@mdxeditor/editor": "^3.11.5",
     "@radix-ui/react-dropdown-menu": "^2.1.1",
     "class-variance-authority": "^0.7.0",

@@ -1,7 +1,16 @@
 "use client";
+import { zodResolver } from "@hookform/resolvers/zod";
 import type { NextPage } from "next";
-import { useState } from "react";
-import { TextArea } from "./_components/TextArea";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+const schema = z.object({
+  answer1: z.string(),
+  answer2: z.string(),
+  answer3: z.string(),
+  answer4: z.string(),
+  answer5: z.string(),
+});
 
 const QUESTIONS = [
   "Q1. シチューとカレーは飲み物ですか",
@@ -11,51 +20,39 @@ const QUESTIONS = [
   "Q5. コーンスープは飲み物ですか",
 ];
 
+type FormValues = z.infer<typeof schema>;
+
 const Page: NextPage = () => {
-  const [ansers, setAnsers] = useState(["", "", "", "", ""]);
-  const [page, setPage] = useState(0);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: zodResolver(schema),
+  });
 
-  const handleChange = (text: string) => {
-    const newAnsers = [...ansers];
-    newAnsers[page] = text;
-    setAnsers(newAnsers);
-  };
-
-  const handleClick = (page: number) => {
-    if (page < 0 || page >= QUESTIONS.length) {
-      return;
-    }
-    setPage(page);
+  const onSubmit = (data: FormValues) => {
+    console.log("---------------");
+    console.log(data);
   };
 
   return (
-    <div>
-      <h2 className="flex items-center justify-center mb-48">
-        <span className="text-xl text-black font-bold">{QUESTIONS[page]}</span>
-      </h2>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div>
-        <p className="text-sm font-medium">回答内容</p>
-        <TextArea text={ansers[page]} setText={handleChange} />
+        <h2 className="flex items-center justify-center mb-48">
+          <span className="text-xl text-black font-bold">{QUESTIONS[0]}</span>
+        </h2>
+        <div>
+          <p className="text-sm font-medium">回答内容</p>
+          <input type="textarea" {...register("answer1")} />
+        </div>
       </div>
-      <div className="mt-4 flex justify-between">
-        <button
-          type="button"
-          disabled={page < 1}
-          onClick={() => handleClick(page - 1)}
-          className="bg-green-700 text-white py-2 px-8 mx-4 rounded-xl disabled:bg-green-200 text-sm font-extrabold"
-        >
-          ← 前にもどる
-        </button>
-        <button
-          type="button"
-          disabled={page > 3}
-          onClick={() => handleClick(page + 1)}
-          className="bg-green-700 text-white py-2 px-8 mx-4 rounded-xl disabled:bg-green-200 text-sm font-extrabold"
-        >
-          次の設問へ進む →
-        </button>
-      </div>
-    </div>
+      <input type="textarea" {...register("answer2")} />
+      <input type="textarea" {...register("answer3")} />
+      <input type="textarea" {...register("answer4")} />
+      <input type="textarea" {...register("answer5")} />
+      <button type="submit">Submit</button>
+    </form>
   );
 };
 
