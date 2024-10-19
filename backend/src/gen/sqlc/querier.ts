@@ -223,6 +223,58 @@ export function getRoomById(
   }
 }
 
+const getRoomsByOwnerIdQuery = `-- name: getRoomsByOwnerId :many
+SELECT id, name, owner_id, member_id, created_at, updated_at FROM Rooms AS room WHERE owner_id = ?1`;
+
+export type getRoomsByOwnerIdParams = {
+  ownerId: string;
+};
+
+export type getRoomsByOwnerIdRow = {
+  id: string;
+  name: string;
+  ownerId: string;
+  memberId: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type RawgetRoomsByOwnerIdRow = {
+  id: string;
+  name: string;
+  owner_id: string;
+  member_id: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export function getRoomsByOwnerId(
+  d1: D1Database,
+  args: getRoomsByOwnerIdParams
+): Query<D1Result<getRoomsByOwnerIdRow>> {
+  const ps = d1
+    .prepare(getRoomsByOwnerIdQuery)
+    .bind(args.ownerId);
+  return {
+    then(onFulfilled?: (value: D1Result<getRoomsByOwnerIdRow>) => void, onRejected?: (reason?: any) => void) {
+      ps.all<RawgetRoomsByOwnerIdRow>()
+        .then((r: D1Result<RawgetRoomsByOwnerIdRow>) => { return {
+          ...r,
+          results: r.results.map((raw: RawgetRoomsByOwnerIdRow) => { return {
+            id: raw.id,
+            name: raw.name,
+            ownerId: raw.owner_id,
+            memberId: raw.member_id,
+            createdAt: raw.created_at,
+            updatedAt: raw.updated_at,
+          }}),
+        }})
+        .then(onFulfilled).catch(onRejected);
+    },
+    batch() { return ps; },
+  }
+}
+
 const createRoomQuery = `-- name: createRoom :exec
 INSERT INTO Rooms (id, name, owner_id, member_id) VALUES (?1, ?2, ?3, ?4)`;
 
@@ -351,6 +403,49 @@ export function createAnswer(
   return {
     then(onFulfilled?: (value: D1Result) => void, onRejected?: (reason?: any) => void) {
       ps.run()
+        .then(onFulfilled).catch(onRejected);
+    },
+    batch() { return ps; },
+  }
+}
+
+const getUsersQuery = `-- name: getUsers :many
+SELECT id, name, image_url, created_at, updated_at FROM Users`;
+
+export type getUsersRow = {
+  id: string;
+  name: string;
+  imageUrl: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type RawgetUsersRow = {
+  id: string;
+  name: string;
+  image_url: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export function getUsers(
+  d1: D1Database
+): Query<D1Result<getUsersRow>> {
+  const ps = d1
+    .prepare(getUsersQuery);
+  return {
+    then(onFulfilled?: (value: D1Result<getUsersRow>) => void, onRejected?: (reason?: any) => void) {
+      ps.all<RawgetUsersRow>()
+        .then((r: D1Result<RawgetUsersRow>) => { return {
+          ...r,
+          results: r.results.map((raw: RawgetUsersRow) => { return {
+            id: raw.id,
+            name: raw.name,
+            imageUrl: raw.image_url,
+            createdAt: raw.created_at,
+            updatedAt: raw.updated_at,
+          }}),
+        }})
         .then(onFulfilled).catch(onRejected);
     },
     batch() { return ps; },
