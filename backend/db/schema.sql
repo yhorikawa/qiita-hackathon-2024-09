@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS Personalities (
   agreeableness INTEGER NOT NULL,
   neuroticism INTEGER NOT NULL,
   description TEXT NOT NULL,
+  description_en TEXT NOT NULL,
   created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
   updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
   FOREIGN KEY (user_id) REFERENCES Users(id)
