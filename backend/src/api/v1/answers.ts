@@ -91,9 +91,66 @@ const fetchPersonalities = async (
         `,
       })),
     ],
-    { response_format: { type: "json_object" } },
+    {
+      response_format: {
+        type: "json_schema",
+        json_schema: {
+          strict: true,
+          name: "big5_scores",
+          schema: {
+            type: "object",
+            properties: {
+              big5_scores: {
+                type: "object",
+                properties: {
+                  openness: {
+                    type: "number",
+                  },
+                  conscientiousness: {
+                    type: "number",
+                  },
+                  extraversion: {
+                    type: "number",
+                  },
+                  agreeableness: {
+                    type: "number",
+                  },
+                  neuroticism: {
+                    type: "number",
+                  },
+                },
+                additionalProperties: false,
+                required: [
+                  "openness",
+                  "conscientiousness",
+                  "extraversion",
+                  "agreeableness",
+                  "neuroticism",
+                ],
+              },
+              profile: {
+                type: "object",
+                properties: {
+                  description: {
+                    type: "string",
+                  },
+                  description_en: {
+                    type: "string",
+                  },
+                },
+                additionalProperties: false,
+                required: ["description", "description_en"],
+              },
+            },
+            additionalProperties: false,
+            required: ["big5_scores", "profile"],
+          },
+        },
+      },
+    },
   );
 
+  console.log(response);
   const json = response.choices[0].message.content;
 
   const validate = z.object({
