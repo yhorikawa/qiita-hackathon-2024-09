@@ -58,3 +58,7 @@ Content-Type: application/json
     "answer": "最近、友人と一緒に旅行に行きました。新しい場所を訪れることができてとても楽しかったです。友人との交流を通じて、新しい文化や習慣に触れることができ、とても刺激的でした。"
   }
 ]
+
+###
+GET {{host}}/api/v1/users/ba6d5b49-f786-478f-aaf9-b7948b83a05e
+Content-Type: application/json
