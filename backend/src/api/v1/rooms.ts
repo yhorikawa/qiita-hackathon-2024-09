@@ -7,9 +7,20 @@ import * as db from "../../gen/sqlc/querier";
 import { fetchChatResponse } from "../../util/openai";
 import type { Bindings } from "./index";
 
+interface MessageWithOptionalUser {
+  user: model.Users | null;
+  id: string;
+  roomId: string;
+  userId: string;
+  message: string;
+  messageType: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface RoomResponse {
   success: boolean;
-  data: { room: model.Rooms; messages: model.Messages[] };
+  data: { room: model.Rooms; messages: MessageWithOptionalUser[] };
   error: string[];
 }
 
@@ -76,26 +87,6 @@ const routes = app
         return c.redirect(`/rooms/${room.id}`);
       }
 
-      const messages = [
-        { role: "system", content: autoChat },
-        {
-          role: "user",
-          content: "こんにちは",
-        },
-      ];
-      const chatGPTResponse = await fetchChatResponse(
-        c.env.OPENAI_API_KEY,
-        messages,
-      );
-
-      await db.createMessage(c.env.DB, {
-        id: crypto.randomUUID(),
-        roomId: room.id,
-        userId,
-        message: chatGPTResponse.choices[0].message.content,
-        messageType: "autoAi",
-      });
-
       return c.redirect(`/rooms/${room.id}`);
     },
   )
@@ -128,9 +119,20 @@ const routes = app
         roomId: room.id,
       });
 
+      const results = await Promise.all(
+        messages.results.map(async (message) => {
+          const user = await db.getUserById(c.env.DB, { id: message.userId });
+
+          return {
+            ...message,
+            user,
+          };
+        }),
+      );
+
       response.success = true;
       response.data.room = room;
-      response.data.messages = messages.results;
+      response.data.messages = results;
       return c.json(response);
     },
   )
