@@ -4,7 +4,6 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { useGetMe } from "#/app/_dependencies/use-get-me";
 import { ChatBallon, Loading } from "#/components/ui";
 import { useGetRooms } from "./use-get-rooms";
 
@@ -16,16 +15,15 @@ type Props = {
 
 const Page: NextPage<Props> = ({ params: { id } }) => {
   const { data, isLoading, error } = useGetRooms(id);
-  const { data: dataMe, isLoading: isLoadingMe, error: errorMe } = useGetMe();
 
-  if (isLoading || isLoadingMe)
+  if (isLoading)
     return (
       <div className="flex flex-col gap-6">
         <p>Loading...</p>
         <Loading />
       </div>
     );
-  if (!data?.success || !dataMe?.success || error || errorMe) return notFound();
+  if (!data?.success || error) return notFound();
 
   return (
     <div>
@@ -51,13 +49,13 @@ const Page: NextPage<Props> = ({ params: { id } }) => {
         </span>
 
         <span className="flex-1 flex justify-center items-center font-bold">
-          {dataMe.data.user.name}
+          {data.data.memberName}
         </span>
       </Link>
       <div className="flex items-start gap-2.5">
         <div>
           {data.data.messages.map(({ id, message, user }) => {
-            const isMe = user?.id !== dataMe.data.user.id;
+            const isMe = user?.id !== data.data.memberName;
             return (
               <div key={id} className="w-full flex gap-y-2">
                 {isMe ? (
