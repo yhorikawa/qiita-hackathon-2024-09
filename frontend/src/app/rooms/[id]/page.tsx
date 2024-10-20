@@ -66,6 +66,8 @@ const Page: NextPage<Props> = ({ params: { id } }) => {
                     className="w-8 h-8 rounded-full"
                     src={user?.imageUrl || "/214x214.png"}
                     alt=""
+                    width={32}
+                    height={32}
                   />
                 ) : null}
                 <div className="flex flex-col gap-1 w-full max-w-[320px]">
