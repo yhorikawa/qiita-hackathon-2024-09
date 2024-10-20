@@ -4,5 +4,6 @@ export { ChatBallon } from "./ChatBalloon";
 export { Input } from "./Input";
 export { Loading } from "./Loading";
 export { Menu } from "./Menu";
+export { MessageSend } from "./MessageSend";
 export { Notice } from "./Notice";
 export { Profile } from "./Profile";
