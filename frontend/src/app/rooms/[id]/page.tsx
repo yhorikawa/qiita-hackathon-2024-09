@@ -4,7 +4,6 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Fragment } from "react";
 import { useGetMe } from "#/app/_dependencies/use-get-me";
 import { ChatBallon, Loading } from "#/components/ui";
 import { useGetRooms } from "./use-get-rooms";
@@ -60,7 +59,7 @@ const Page: NextPage<Props> = ({ params: { id } }) => {
           {data.data.messages.map(({ id, message, user }) => {
             const isMe = user?.id !== dataMe.data.user.id;
             return (
-              <Fragment key={id}>
+              <div key={id} className="w-full flex gap-y-2">
                 {isMe ? (
                   <Image
                     className="w-8 h-8 rounded-full"
@@ -84,7 +83,7 @@ const Page: NextPage<Props> = ({ params: { id } }) => {
                 {isMe ? null : (
                   <Image className="w-8 h-8 rounded-full" src="" alt="" />
                 )}
-              </Fragment>
+              </div>
             );
           })}
         </div>
