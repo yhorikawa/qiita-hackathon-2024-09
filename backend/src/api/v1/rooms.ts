@@ -80,15 +80,19 @@ const routes = app
           return c.text("Room not found");
         }
 
+        const personality = await db.getPersonalityByUserId(c.env.DB, {
+          userId: userId,
+        });
+
         const messages = [
           { role: "system", content: autoChat },
           {
             role: "user",
-            content: "こんにちは",
+            content: personality?.description ?? "こんにちは",
           },
         ];
 
-        let currentContent = "こんにちは";
+        let currentContent = personality?.description ?? "こんにちは";
 
         for (let i = 0; i < 3; i++) {
           const chatGPTResponse = await fetchChatResponse(
@@ -244,7 +248,7 @@ export default routes;
 const autoChat = `
   必ず日本語で答えてください。
 
-  あなたは、相談に乗るプロです。
-  相手の質問に対して、適切なアドバイスをしてください。
+  あなたは、相手と話す会話のプロです。
+  相手との会話に対して、適切な会話をしてください。
   また、時には疑問を投げかけて、相手に寄り添ってください。
 `;
