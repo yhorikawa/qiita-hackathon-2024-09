@@ -10,8 +10,8 @@ const Page: NextPage = () => {
   const inputId = useId();
 
   return (
-    <section className="bg-[url('/top.webp')] bg-auto bg-fixed bg-center bg-no-repeat">
-      <div className="bg-black bg-opacity-65">
+    <section className="bg-[url('/top.webp')] bg-auto bg-fixed bg-center bg-no-repeat h-lvh">
+      <div className="bg-black bg-opacity-65 h-lvh">
         <header className="px-4 py-2">
           <Image src="/logo.png" alt="yncGuardian" width={134} height={27} />
         </header>
