@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import "@mdxeditor/editor/style.css";
 import { FooterLayout } from "#/components/FooterLayout";
+import { HeaderLayout } from "#/components/HeaderLayout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,11 +23,7 @@ export default function RootLayout({
     <html lang="ja">
       <body className={inter.className}>
         <div className="w-[390px] m-auto">
-          <header className="h-8 px-4 py-2 flex items-center">
-            <h1 className="text-violet-500 text-xl font-bold">
-              なんかいい感じのロゴ
-            </h1>
-          </header>
+          <HeaderLayout />
           <main className="bg-gray-50">
             <div className="mx-auto max-w-5xl min-h-svh relative">
               {children}
