@@ -77,18 +77,49 @@ const routes = app
             content: "こんにちは",
           },
         ];
-        const chatGPTResponse = await fetchChatResponse(
-          c.env.OPENAI_API_KEY,
-          messages,
-        );
 
-        await db.createMessage(c.env.DB, {
-          id: crypto.randomUUID(),
-          roomId: room.id,
-          userId,
-          message: chatGPTResponse.choices[0].message.content,
-          messageType: "autoAi",
-        });
+        let currentContent = "こんにちは";
+
+        for (let i = 0; i < 3; i++) {
+          const chatGPTResponse = await fetchChatResponse(
+            c.env.OPENAI_API_KEY,
+            messages,
+          );
+
+          await db.createMessage(c.env.DB, {
+            id: crypto.randomUUID(),
+            roomId: room.id,
+            userId: id,
+            message: chatGPTResponse.choices[0].message.content,
+            messageType: "autoAi",
+          });
+
+          currentContent = chatGPTResponse.choices[0].message.content;
+
+          const message_response = [
+            { role: "system", content: autoChat },
+            {
+              role: "user",
+              content: currentContent,
+            },
+          ];
+
+          const chatGPTMessageResponse = await fetchChatResponse(
+            c.env.OPENAI_API_KEY,
+            message_response,
+          );
+
+          await db.createMessage(c.env.DB, {
+            id: crypto.randomUUID(),
+            roomId: room.id,
+            userId,
+            message: chatGPTMessageResponse.choices[0].message.content,
+            messageType: "autoAi",
+          });
+
+          messages[1].content =
+            chatGPTMessageResponse.choices[0].message.content;
+        }
         return c.redirect(`/rooms/${room.id}`);
       }
 
@@ -177,26 +208,6 @@ const routes = app
         userId: userId,
         message: message,
         messageType: "general",
-      });
-
-      const messages = [
-        { role: "system", content: autoChat },
-        {
-          role: "user",
-          content: message,
-        },
-      ];
-      const chatGPTResponse = await fetchChatResponse(
-        c.env.OPENAI_API_KEY,
-        messages,
-      );
-
-      await db.createMessage(c.env.DB, {
-        id: crypto.randomUUID(),
-        roomId: room.id,
-        userId: room.memberId ?? crypto.randomUUID(),
-        message: chatGPTResponse.choices[0].message.content,
-        messageType: "autoAi",
       });
 
       response.success = true;
