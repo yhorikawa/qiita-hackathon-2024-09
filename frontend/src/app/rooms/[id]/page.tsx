@@ -34,7 +34,10 @@ const Page: NextPage<Props> = ({ params: { id } }) => {
 
   return (
     <div>
-      <Link href={`/rooms/${id}`} className="flex w-full h-12">
+      <Link
+        href={`/rooms/${data.data.room.memberId}`}
+        className="flex w-full h-12"
+      >
         <span className="flex justify-center items-center ">
           <svg
             className="w-[24px] h-[24px] text-black"
