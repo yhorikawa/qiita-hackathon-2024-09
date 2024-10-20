@@ -42,24 +42,33 @@ const Page: NextPage = () => {
   console.error(errors);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {QUESTIONS.map(({ type, id, text }) => (
-        <Fragment key={id}>
-          <div>
-            <h2 className="flex items-center justify-center mb-48">
-              <span className="text-xl text-black font-bold">{text}</span>
-            </h2>
-            <div>
-              <p className="text-sm font-medium">回答内容</p>
-              <textarea {...register(type)} className="" />
+    <section className="py-6 px-4">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {QUESTIONS.map(({ type, id, text, order }) => (
+          <Fragment key={id}>
+            <div className="[&:not(:first-child)]:mt-12">
+              <h2 className="flex items-center justify-center text-lg leading-relaxed font-bold">
+                Q{order}.{text}
+              </h2>
+              <div className="mt-6">
+                <p className="text-sm font-medium">Q{order}への回答</p>
+                <textarea
+                  {...register(type)}
+                  className="mt-3 block w-full rounded-md placeholder:text-sm"
+                  placeholder="回答を入力…"
+                />
+                <p className="mt-3 text-xs font-normal leading-normal">
+                  電話番号や住所など個人を特定する情報は入力しないでください
+                </p>
+              </div>
             </div>
-          </div>
-        </Fragment>
-      ))}
-      <Button type="submit" icon={true} isDisabled={!isValid}>
-        {isValid ? "この回答で守護霊を作成する" : "未入力の項目があります"}
-      </Button>
-    </form>
+          </Fragment>
+        ))}
+        <Button type="submit" icon={true} isDisabled={!isValid} isFull={true}>
+          {isValid ? "この回答で守護霊を作成する" : "未入力の項目があります"}
+        </Button>
+      </form>
+    </section>
   );
 };
 
