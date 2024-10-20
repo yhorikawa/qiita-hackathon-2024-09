@@ -11,12 +11,12 @@ const Page: NextPage = () => {
 
   return (
     <section className="bg-[url('/top.webp')] bg-auto bg-fixed bg-center bg-no-repeat">
-      <div className="bg-black bg-opacity-65 h-dvh">
+      <div className="bg-black bg-opacity-65">
         <header className="px-4 py-2">
           <Image src="/logo.png" alt="yncGuardian" width={134} height={27} />
         </header>
-        <div className="flex items-center">
-          <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 flex-grow ">
+        <div className="flex items-center mt-8">
+          <div className="py-8 px-4 mx-auto max-w-screen-xl text-center flex-grow ">
             <h1 className="text-2xl font-extrabold tracking-tight leading-normal text-white">
               守護霊を通じて
               <br />
@@ -44,7 +44,7 @@ const Page: NextPage = () => {
                 value={name}
                 onInput={(e) => setName(e.currentTarget.value)}
               />
-              <div className="text-center">
+              <div className="text-center mb-8">
                 <Button type="button" icon={true} onClick={handleAction}>
                   自分だけの守護霊を作る
                 </Button>
