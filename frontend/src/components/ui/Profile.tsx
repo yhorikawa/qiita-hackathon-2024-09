@@ -71,7 +71,7 @@ export const Profile = ({
       />
       {id ? (
         <Link
-          href={`/rooms/${id}`}
+          href={`/api/v1/rooms/redirect-room/${id}`}
           className="text-white bg-blue-500 rounded-lg"
         >
           この守護霊にメッセージを送る
