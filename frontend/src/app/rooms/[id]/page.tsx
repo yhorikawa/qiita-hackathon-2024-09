@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { useEffect } from "react";
+import { twMerge } from "tailwind-merge";
 import { ChatBallon, Loading, MessageSend } from "#/components/ui";
 import { useGetRooms } from "./use-get-rooms";
 import { usePostMessage } from "./use-post-message";
@@ -33,8 +34,11 @@ const Page: NextPage<Props> = ({ params: { id } }) => {
   if (!data?.success || error) return notFound();
 
   return (
-    <div>
-      <Link href={`/rooms/${id}`} className="flex w-full h-12">
+    <div className="bg-gray-100">
+      <Link
+        href={`/rooms/${data.data.room.memberId}`}
+        className="flex w-full h-12"
+      >
         <span className="flex justify-center items-center ">
           <svg
             className="w-[24px] h-[24px] text-black"
@@ -60,12 +64,12 @@ const Page: NextPage<Props> = ({ params: { id } }) => {
         </span>
       </Link>
       <div className="flex items-start gap-2.5">
-        <div>
-          {data.data.messages.map(({ id, message, user }) => {
+        <div className="px-4 py-6 gap-y-4 flex flex-col">
+          {data.data.messages.map(({ id, message, user, messageType }) => {
             const isMe = user?.id !== data.data.room.memberId;
             return (
-              <div key={id} className="w-full flex gap-y-2">
-                {isMe ? (
+              <div key={id} className="w-full flex gap-x-4">
+                {!isMe ? (
                   <Image
                     className="w-8 h-8 rounded-full"
                     src={user?.imageUrl || "/214x214.png"}
@@ -75,17 +79,25 @@ const Page: NextPage<Props> = ({ params: { id } }) => {
                   />
                 ) : null}
                 <div className="flex flex-col gap-1 w-full max-w-[320px]">
-                  <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                    <span className="text-sm font-semibold text-gray-900 ">
-                      {user?.name}
+                  <div
+                    className={twMerge([
+                      "flex items-center flex-row-reverse space-x-2 rtl:space-x-reverse",
+                      isMe ? "flex-row-reverse" : "flex-row",
+                    ])}
+                  >
+                    <span className="text-sm font-semibold text-gray-900">
+                      {isMe ? "あなた" : user?.name}
+                      {!isMe && "さん"}
+                      {messageType === "autoAi" ? "の守護霊" : ""}
                     </span>
                   </div>
                   <ChatBallon
                     message={message}
-                    position={isMe ? "left" : "right"}
+                    position={!isMe ? "left" : "right"}
+                    isAi={messageType === "autoAi"}
                   />
                 </div>
-                {isMe ? null : (
+                {!isMe ? null : (
                   <Image
                     className="w-8 h-8 rounded-full"
                     src={user?.imageUrl || "/214x214.png"}
