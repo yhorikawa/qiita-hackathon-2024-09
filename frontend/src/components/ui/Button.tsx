@@ -5,6 +5,7 @@ type Props = {
   type?: "button" | "submit";
   icon?: boolean;
   isDisabled?: boolean;
+  isFull?: boolean;
   onClick?: () => void;
 } & PropsWithChildren;
 
@@ -13,6 +14,7 @@ export const Button = ({
   type = "button",
   icon = false,
   isDisabled = false,
+  isFull = false,
   onClick,
 }: Props) => {
   return (
@@ -20,14 +22,20 @@ export const Button = ({
       type={type}
       className={twMerge(
         "mt-6 font-medium rounded-lg text-sm px-5 py-3 focus:outline-none",
+        isFull ? "w-full" : "w-auto",
         isDisabled
-          ? "bg-gray-400 cursor-not-allowed"
+          ? "bg-gray-400 cursor-not-allowed opacity-35"
           : "bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 text-white",
       )}
       onClick={onClick}
       disabled={isDisabled}
     >
-      <div className={icon ? "flex items-center" : undefined}>
+      <div
+        className={twMerge(
+          icon ? "flex items-center" : undefined,
+          isFull && "justify-center",
+        )}
+      >
         <p>{children}</p>
         {icon && !isDisabled ? (
           <svg
