@@ -62,7 +62,7 @@ const Page: NextPage<Props> = ({ params: { id } }) => {
       <div className="flex items-start gap-2.5">
         <div>
           {data.data.messages.map(({ id, message, user }) => {
-            const isMe = user?.id !== data.data.room.memberName;
+            const isMe = user?.id !== data.data.room.memberId;
             return (
               <div key={id} className="w-full flex gap-y-2">
                 {isMe ? (
@@ -86,7 +86,13 @@ const Page: NextPage<Props> = ({ params: { id } }) => {
                   />
                 </div>
                 {isMe ? null : (
-                  <Image className="w-8 h-8 rounded-full" src="" alt="" />
+                  <Image
+                    className="w-8 h-8 rounded-full"
+                    src={user?.imageUrl || "/214x214.png"}
+                    alt=""
+                    width={32}
+                    height={32}
+                  />
                 )}
               </div>
             );
