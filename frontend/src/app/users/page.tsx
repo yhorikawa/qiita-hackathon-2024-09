@@ -2,14 +2,17 @@
 import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { Loading } from "#/components/ui";
 import { useGetUsers } from "./use-get-users";
 
 const Page: NextPage = () => {
   const { data, isLoading, error } = useGetUsers();
+  const router = useRouter();
 
-  const handleClick = () => {};
+  const handleClick = (memberId: string) => {
+    router.push(`/api/v1/rooms/redirect-room/${memberId}`);
+  };
 
   if (isLoading)
     return (
@@ -19,7 +22,6 @@ const Page: NextPage = () => {
       </div>
     );
 
-  console.log(data);
   if (!data?.success || error) return notFound();
 
   return (
@@ -56,9 +58,9 @@ const Page: NextPage = () => {
                 </svg>
               )}
               <span className="flex-1">{name}</span>
-              <button type="button" onClick={handleClick}>
+              <button type="button" onClick={() => handleClick(id)}>
                 <svg
-                  className="text-gray-400 w-[24px] h-[24px] dark:text-white"
+                  className="text-gray-400 w-[24px] h-[24px]"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"

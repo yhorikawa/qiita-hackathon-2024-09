@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Fragment } from "react";
+import { useGetMe } from "#/app/_dependencies/use-get-me";
 import { ChatBallon, Loading } from "#/components/ui";
 import { useGetRooms } from "./use-get-rooms";
 
@@ -16,15 +17,16 @@ type Props = {
 
 const Page: NextPage<Props> = ({ params: { id } }) => {
   const { data, isLoading, error } = useGetRooms(id);
+  const { data: dataMe, isLoading: isLoadingMe, error: errorMe } = useGetMe();
 
-  if (isLoading)
+  if (isLoading || isLoadingMe)
     return (
       <div className="flex flex-col gap-6">
         <p>Loading...</p>
         <Loading />
       </div>
     );
-  if (!data?.success || error) return notFound();
+  if (!data?.success || !dataMe?.success || error || errorMe) return notFound();
 
   return (
     <div>
@@ -50,23 +52,40 @@ const Page: NextPage<Props> = ({ params: { id } }) => {
         </span>
 
         <span className="flex-1 flex justify-center items-center font-bold">
-          田中 しろー
+          {dataMe.data.user.name}
         </span>
       </Link>
       <div className="flex items-start gap-2.5">
-        {data.data.messages.map(({ id, message }) => (
-          <Fragment key={id}>
-            <Image className="w-8 h-8 rounded-full" src="" alt="" />
-            <div className="flex flex-col gap-1 w-full max-w-[320px]">
-              <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                <span className="text-sm font-semibold text-gray-900 ">
-                  Bonnie Green
-                </span>
-              </div>
-              <ChatBallon message={message} position="right" />
-            </div>
-          </Fragment>
-        ))}
+        <div>
+          {data.data.messages.map(({ id, message, user }) => {
+            const isMe = user?.id !== dataMe.data.user.id;
+            return (
+              <Fragment key={id}>
+                {isMe ? (
+                  <Image
+                    className="w-8 h-8 rounded-full"
+                    src={user?.imageUrl || "/214x214.png"}
+                    alt=""
+                  />
+                ) : null}
+                <div className="flex flex-col gap-1 w-full max-w-[320px]">
+                  <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                    <span className="text-sm font-semibold text-gray-900 ">
+                      {user?.name}
+                    </span>
+                  </div>
+                  <ChatBallon
+                    message={message}
+                    position={isMe ? "left" : "right"}
+                  />
+                </div>
+                {isMe ? null : (
+                  <Image className="w-8 h-8 rounded-full" src="" alt="" />
+                )}
+              </Fragment>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
