@@ -1,10 +1,14 @@
 import Link from "next/link";
 import type { PropsWithChildren } from "react";
 
-const MenuItem = ({ children }: PropsWithChildren) => {
+type MenuItemProps = {
+  href: string;
+} & PropsWithChildren;
+
+const MenuItem = ({ children, href }: MenuItemProps) => {
   return (
     <li className="py-2 flex-1 flex flex-col items-center text-sm leading-normal text-gray-500 cursor-pointer">
-      <Link href="#" className="flex items-center flex-col">
+      <Link href={href} className="flex items-center flex-col">
         {children}
       </Link>
     </li>
@@ -15,7 +19,7 @@ export const Menu = () => {
   return (
     <nav>
       <ul className="flex bg-white">
-        <MenuItem>
+        <MenuItem href="/">
           <svg
             className="w-6 h-6 text-gray-500 dark:text-white"
             aria-hidden="true"
@@ -33,7 +37,7 @@ export const Menu = () => {
           </svg>
           ホーム
         </MenuItem>
-        <MenuItem>
+        <MenuItem href="/users">
           <svg
             className="w-6 h-6 text-gray-500 dark:text-white"
             aria-hidden="true"
