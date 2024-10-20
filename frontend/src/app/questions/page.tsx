@@ -42,7 +42,7 @@ const Page: NextPage = () => {
   console.error(errors);
 
   return (
-    <section className="py-6 px-4">
+    <section className="pt-6 px-4 pb-16">
       <form onSubmit={handleSubmit(onSubmit)}>
         {QUESTIONS.map(({ type, id, text, order }) => (
           <Fragment key={id}>
