@@ -51,7 +51,7 @@ const Page: NextPage = () => {
             </h2>
             <div>
               <p className="text-sm font-medium">回答内容</p>
-              <input type="textarea" {...register(type)} />
+              <textarea {...register(type)} className="" />
             </div>
           </div>
         </Fragment>
