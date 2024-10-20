@@ -4,7 +4,7 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChatBallon, Loading } from "#/components/ui";
+import { ChatBallon, Loading, MessageSend } from "#/components/ui";
 import { useGetRooms } from "./use-get-rooms";
 
 type Props = {
@@ -86,6 +86,7 @@ const Page: NextPage<Props> = ({ params: { id } }) => {
           })}
         </div>
       </div>
+      <MessageSend />
     </div>
   );
 };
