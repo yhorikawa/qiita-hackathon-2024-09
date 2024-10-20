@@ -4,8 +4,10 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChatBallon, Loading } from "#/components/ui";
+import { useEffect } from "react";
+import { ChatBallon, Loading, MessageSend } from "#/components/ui";
 import { useGetRooms } from "./use-get-rooms";
+import { usePostMessage } from "./use-post-message";
 
 type Props = {
   params: {
@@ -14,7 +16,12 @@ type Props = {
 };
 
 const Page: NextPage<Props> = ({ params: { id } }) => {
-  const { data, isLoading, error } = useGetRooms(id);
+  const { data, isLoading, error, mutate } = useGetRooms(id);
+  const { handleAction, setId, setText, text } = usePostMessage(mutate);
+
+  useEffect(() => {
+    setId(id);
+  }, [id, setId]);
 
   if (isLoading)
     return (
@@ -55,7 +62,7 @@ const Page: NextPage<Props> = ({ params: { id } }) => {
       <div className="flex items-start gap-2.5">
         <div>
           {data.data.messages.map(({ id, message, user }) => {
-            const isMe = user?.id !== data.data.room.memberName;
+            const isMe = user?.id !== data.data.room.memberId;
             return (
               <div key={id} className="w-full flex gap-y-2">
                 {isMe ? (
@@ -79,13 +86,20 @@ const Page: NextPage<Props> = ({ params: { id } }) => {
                   />
                 </div>
                 {isMe ? null : (
-                  <Image className="w-8 h-8 rounded-full" src="" alt="" />
+                  <Image
+                    className="w-8 h-8 rounded-full"
+                    src={user?.imageUrl || "/214x214.png"}
+                    alt=""
+                    width={32}
+                    height={32}
+                  />
                 )}
               </div>
             );
           })}
         </div>
       </div>
+      <MessageSend onClick={handleAction} text={text} setText={setText} />
     </div>
   );
 };

@@ -4,7 +4,7 @@ import type { NextPage } from "next";
 import { Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button, MessageSend } from "#/components/ui";
+import { Button } from "#/components/ui";
 import { QUESTIONS } from "#/constants/questions";
 import { usePostAnswers } from "./use-post-question";
 
@@ -68,7 +68,6 @@ const Page: NextPage = () => {
           {isValid ? "この回答で守護霊を作成する" : "未入力の項目があります"}
         </Button>
       </form>
-      <MessageSend />
     </section>
   );
 };
