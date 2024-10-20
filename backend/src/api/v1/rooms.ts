@@ -39,16 +39,21 @@ app.use("*", async (c, next) => {
 
 const routes = app
   .get(
-    "/redirect-room",
-    zValidator("json", z.object({ memberId: z.string() })),
+    "/redirect-room/:id",
+    zValidator(
+      "param",
+      z.object({
+        id: z.string(),
+      }),
+    ),
     async (c) => {
       const payload = c.get("jwtPayload");
       const userId = payload.id;
-      const { memberId } = await c.req.valid("json");
+      const { id } = await c.req.valid("param");
 
       const room = await db.getRoomByOwnerIdAndMemberId(c.env.DB, {
         ownerId: userId,
-        memberId,
+        memberId: id,
       });
       if (!room) {
         const uuid = crypto.randomUUID();
@@ -56,7 +61,7 @@ const routes = app
           id: uuid,
           name: "Chat Room",
           ownerId: userId,
-          memberId,
+          memberId: id,
         });
 
         const room = await db.getRoomById(c.env.DB, { id: uuid });
