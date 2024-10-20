@@ -49,13 +49,13 @@ const Page: NextPage<Props> = ({ params: { id } }) => {
         </span>
 
         <span className="flex-1 flex justify-center items-center font-bold">
-          {data.data.memberName}
+          {data.data.room.memberName}
         </span>
       </Link>
       <div className="flex items-start gap-2.5">
         <div>
           {data.data.messages.map(({ id, message, user }) => {
-            const isMe = user?.id !== data.data.memberName;
+            const isMe = user?.id !== data.data.room.memberName;
             return (
               <div key={id} className="w-full flex gap-y-2">
                 {isMe ? (
