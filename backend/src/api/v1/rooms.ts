@@ -18,9 +18,19 @@ interface MessageWithOptionalUser {
   updatedAt: string;
 }
 
+interface RoomsWithMember {
+  id: string;
+  name: string;
+  ownerId: string;
+  memberId: string | null;
+  memberName: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface RoomResponse {
   success: boolean;
-  data: { room: model.Rooms; messages: MessageWithOptionalUser[] };
+  data: { room: RoomsWithMember; messages: MessageWithOptionalUser[] };
   error: string[];
 }
 
@@ -140,7 +150,7 @@ const routes = app
 
       const response: RoomResponse = {
         success: false,
-        data: { room: {} as model.Rooms, messages: [] },
+        data: { room: {} as RoomsWithMember, messages: [] },
         error: [],
       };
 
@@ -150,6 +160,20 @@ const routes = app
         response.error.push("Room not found");
         return c.json(response);
       }
+
+      const member = await db.getUserById(c.env.DB, {
+        id: room.memberId ?? "",
+      });
+
+      const roomWithMember: RoomsWithMember = {
+        id: room.id,
+        name: room.name,
+        ownerId: room.ownerId,
+        memberId: room.memberId,
+        memberName: member ? member.name : null,
+        createdAt: room.createdAt,
+        updatedAt: room.updatedAt,
+      };
 
       const messages = await db.getMessagesByRoomId(c.env.DB, {
         roomId: room.id,
@@ -167,7 +191,7 @@ const routes = app
       );
 
       response.success = true;
-      response.data.room = room;
+      response.data.room = roomWithMember;
       response.data.messages = results;
       return c.json(response);
     },
