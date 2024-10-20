@@ -10,8 +10,8 @@ const inter = Inter({ subsets: ["latin"] });
 export const runtime = "edge";
 
 export const metadata: Metadata = {
-  title: "マンホールは大体円形",
-  description: "マンホールは大体円形",
+  title: "SyncGuradian",
+  description: "SyncGuradian",
 };
 
 export default function RootLayout({
