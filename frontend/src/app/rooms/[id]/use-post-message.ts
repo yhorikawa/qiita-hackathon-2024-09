@@ -3,35 +3,31 @@ import { useCallback } from "react";
 import useSWRMutation from "swr/mutation";
 import { client } from "#/lib/client";
 
-type Answer = {
-  uuid: string;
-  answer: string;
+type Message = {
+  message: string;
 };
 
 const fetcher = async (
   _url: string,
-  { arg }: { arg: { answers: Answer[] } },
+  { arg }: { arg: { message: Message; id: string } },
 ) => {
-  const res = await client.api.v1.answers.$post({
-    json: arg.answers,
+  const res = await client.api.v1.rooms[":id"].messages.$post({
+    param: { id: arg.id },
+    json: arg.message,
   });
   if (!res.ok) throw new Error(String(res.status));
   return res.ok;
 };
 
-export const usePostAnswers = () => {
-  const router = useRouter();
-  const onSuccess = useCallback(() => {
-    router.push("/questions/completed");
-  }, [router]);
-  const { trigger } = useSWRMutation("postMessage", fetcher, {
-    onSuccess,
+export const usePostMessage = (updateMessage: () => void) => {
+  const { trigger } = useSWRMutation("postRoomMessage", fetcher, {
+    onSuccess: () => updateMessage(),
   });
 
   const handleAction = useCallback(
-    async (answers: Answer[]) => {
+    async (message: Message, id: string) => {
       try {
-        await trigger({ answers: answers });
+        await trigger({ message: message, id: id });
       } catch (error) {
         console.error("Error occurred:", error);
       } finally {
