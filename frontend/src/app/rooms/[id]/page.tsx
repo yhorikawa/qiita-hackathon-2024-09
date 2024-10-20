@@ -4,7 +4,6 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Fragment } from "react";
 import { ChatBallon, Loading } from "#/components/ui";
 import { useGetRooms } from "./use-get-rooms";
 
@@ -50,23 +49,42 @@ const Page: NextPage<Props> = ({ params: { id } }) => {
         </span>
 
         <span className="flex-1 flex justify-center items-center font-bold">
-          田中 しろー
+          {data.data.room.memberName}
         </span>
       </Link>
       <div className="flex items-start gap-2.5">
-        {data.data.messages.map(({ id, message }) => (
-          <Fragment key={id}>
-            <Image className="w-8 h-8 rounded-full" src="" alt="" />
-            <div className="flex flex-col gap-1 w-full max-w-[320px]">
-              <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                <span className="text-sm font-semibold text-gray-900 ">
-                  Bonnie Green
-                </span>
+        <div>
+          {data.data.messages.map(({ id, message, user }) => {
+            const isMe = user?.id !== data.data.room.memberName;
+            return (
+              <div key={id} className="w-full flex gap-y-2">
+                {isMe ? (
+                  <Image
+                    className="w-8 h-8 rounded-full"
+                    src={user?.imageUrl || "/214x214.png"}
+                    alt=""
+                    width={32}
+                    height={32}
+                  />
+                ) : null}
+                <div className="flex flex-col gap-1 w-full max-w-[320px]">
+                  <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                    <span className="text-sm font-semibold text-gray-900 ">
+                      {user?.name}
+                    </span>
+                  </div>
+                  <ChatBallon
+                    message={message}
+                    position={isMe ? "left" : "right"}
+                  />
+                </div>
+                {isMe ? null : (
+                  <Image className="w-8 h-8 rounded-full" src="" alt="" />
+                )}
               </div>
-              <ChatBallon message={message} position="right" />
-            </div>
-          </Fragment>
-        ))}
+            );
+          })}
+        </div>
       </div>
     </div>
   );
