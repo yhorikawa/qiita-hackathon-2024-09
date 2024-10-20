@@ -72,7 +72,7 @@ export const Profile = ({
       {id ? (
         <Link
           href={`/api/v1/rooms/redirect-room/${id}`}
-          className="text-white bg-blue-500 rounded-lg"
+          className="text-white bg-blue-500 rounded-lg py-3 px-5"
         >
           この守護霊にメッセージを送る
         </Link>

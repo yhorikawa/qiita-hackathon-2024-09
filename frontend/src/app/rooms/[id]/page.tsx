@@ -25,8 +25,7 @@ const Page: NextPage<Props> = ({ params: { id } }) => {
 
   if (isLoading)
     return (
-      <div className="flex flex-col gap-6">
-        <p>Loading...</p>
+      <div className="w-24 h-24 mx-auto mt-20">
         <Loading />
       </div>
     );
