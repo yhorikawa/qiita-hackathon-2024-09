@@ -12,6 +12,9 @@ export const runtime = "edge";
 export const metadata: Metadata = {
   title: "SyncGuradian",
   description: "yncGuardian ~守護霊を通じて、思いがけない出会いを~",
+  robots: {
+    index: false,
+  },
 };
 
 export default function RootLayout({
